@@ -1,19 +1,13 @@
 package org.example;
 
-import static io.github.libsdl4j.api.Sdl.SDL_Init;
-import static io.github.libsdl4j.api.Sdl.SDL_Quit;
 import static io.github.libsdl4j.api.error.SdlError.SDL_GetError;
-import static io.github.libsdl4j.api.hints.SdlHints.SDL_SetHint;
-import static io.github.libsdl4j.api.mouse.SdlMouse.SDL_ShowCursor;
 import static io.github.libsdl4j.api.render.SdlRender.SDL_CreateRenderer;
 import static io.github.libsdl4j.api.video.SdlVideo.SDL_CreateWindow;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
-import io.github.libsdl4j.api.SdlSubSystemConst;
+import com.sun.jna.Native;
 import io.github.libsdl4j.api.event.SDL_Event;
-import io.github.libsdl4j.api.event.SdlEventsConst;
-import io.github.libsdl4j.api.hints.SdlHintsConst;
 import io.github.libsdl4j.api.render.SDL_Renderer;
 import io.github.libsdl4j.api.render.SDL_RendererFlags;
 import io.github.libsdl4j.api.video.SDL_Window;
@@ -21,22 +15,14 @@ import io.github.libsdl4j.api.video.SdlVideoConst;
 
 public class SdlModule extends AbstractModule {
 
-  // Initialize SDL
-  public SdlModule() {
-    //    var result = SDL_Init(SDL_INIT_EVERYTHING);
-    var sdlFlags = SdlSubSystemConst.SDL_INIT_VIDEO;
-    var result = SDL_Init(sdlFlags);
-    if (result != 0) {
-      throw new IllegalStateException(
-          "Unable to initialize SDL library (Error code " + result + "): " + SDL_GetError());
-    }
-    SDL_SetHint(SdlHintsConst.SDL_HINT_RENDER_SCALE_QUALITY, "linear");
-    SDL_ShowCursor(SdlEventsConst.SDL_DISABLE);
-  }
-
   @Provides
   static SDL_Event providesSdlEvent() {
     return new SDL_Event();
+  }
+
+  @Provides
+  static SDL_Image providesSdlImageLibrary() {
+    return Native.load("SDL2_image", SDL_Image.class);
   }
 
   @Provides
@@ -60,11 +46,5 @@ public class SdlModule extends AbstractModule {
       throw new IllegalStateException("Unable to create SDL window: " + SDL_GetError());
     }
     return window;
-  }
-
-  private void cleanup() {
-    //            SDL_DestroyRenderer(app.renderer);
-    //            SDL_DestroyWindow(app.window);
-    SDL_Quit();
   }
 }

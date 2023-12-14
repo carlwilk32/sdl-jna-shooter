@@ -32,6 +32,8 @@ dependencies {
 
     implementation 'ch.qos.logback:logback-classic:1.4.8'
     implementation 'org.slf4j:slf4j-api:2.0.9'
+
+    implementation 'commons-io:commons-io:2.15.1'
 }
 
 test {

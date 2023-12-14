@@ -4,7 +4,7 @@ import com.sun.jna.Library;
 import io.github.libsdl4j.api.render.SDL_Renderer;
 import io.github.libsdl4j.api.render.SDL_Texture;
 
-public interface SdlImageLib extends Library {
+public interface SDL_Image extends Library {
   int IMG_INIT_JPG = 0x00000001;
   int IMG_INIT_PNG = 0x00000002;
   int IMG_INIT_TIF = 0x00000004;
