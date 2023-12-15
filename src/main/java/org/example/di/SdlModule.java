@@ -38,6 +38,9 @@ public class SdlModule extends AbstractModule {
   @Singleton
   static SDL_Renderer provideSdlRenderer(SDL_Window sdlWindow) {
     var rendererFlags = SDL_RendererFlags.SDL_RENDERER_ACCELERATED;
+    // TODO: maybe pass with vsync to cap FPS
+    //    var rendererFlags = SDL_RendererFlags.SDL_RENDERER_ACCELERATED |
+    // SDL_RendererFlags.SDL_RENDERER_PRESENTVSYNC;
     return SDL_CreateRenderer(sdlWindow, -1, rendererFlags);
   }
 
