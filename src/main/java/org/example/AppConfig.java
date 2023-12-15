@@ -15,4 +15,10 @@ public class AppConfig {
   @Named("app.window.height")
   public final int WINDOW_HEIGHT;
 
+  @Named("gameplay.speed.player")
+  public final int PLAYER_SPEED;
+
+  @Named("gameplay.speed.playerBullet")
+  public final int PLAYER_BULLET_SPEED;
+
 }

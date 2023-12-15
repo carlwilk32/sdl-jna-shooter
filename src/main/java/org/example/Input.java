@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import static io.github.libsdl4j.api.event.SdlEvents.SDL_PollEvent;
+import static io.github.libsdl4j.api.scancode.SDL_Scancode.*;
 
 @Slf4j
 @Singleton
@@ -21,6 +22,7 @@ public class Input {
   public boolean down;
   public boolean left;
   public boolean right;
+  public boolean fire;
 
   public void doInput() {
     while (SDL_PollEvent(event) != 0) {
@@ -34,40 +36,48 @@ public class Input {
 
   private void doKeyUp(SDL_KeyboardEvent key) {
     if (key.repeat == 0) {
-      if (key.keysym.scancode == SDL_Scancode.SDL_SCANCODE_UP) {
+      if (key.keysym.scancode == SDL_SCANCODE_UP) {
         this.up = false;
       }
 
-      if (key.keysym.scancode == SDL_Scancode.SDL_SCANCODE_DOWN) {
+      if (key.keysym.scancode == SDL_SCANCODE_DOWN) {
         this.down = false;
       }
 
-      if (key.keysym.scancode == SDL_Scancode.SDL_SCANCODE_LEFT) {
+      if (key.keysym.scancode == SDL_SCANCODE_LEFT) {
         this.left = false;
       }
 
-      if (key.keysym.scancode == SDL_Scancode.SDL_SCANCODE_RIGHT) {
+      if (key.keysym.scancode == SDL_SCANCODE_RIGHT) {
         this.right = false;
+      }
+
+      if (key.keysym.scancode == SDL_SCANCODE_SPACE) {
+        this.fire = false;
       }
     }
   }
 
   private void doKeyDown(SDL_KeyboardEvent key) {
     if (key.repeat == 0) {
-      if (key.keysym.scancode == SDL_Scancode.SDL_SCANCODE_UP) {
+      if (key.keysym.scancode == SDL_SCANCODE_UP) {
         this.up = true;
       }
 
-      if (key.keysym.scancode == SDL_Scancode.SDL_SCANCODE_DOWN) {
+      if (key.keysym.scancode == SDL_SCANCODE_DOWN) {
         this.down = true;
       }
 
-      if (key.keysym.scancode == SDL_Scancode.SDL_SCANCODE_LEFT) {
+      if (key.keysym.scancode == SDL_SCANCODE_LEFT) {
         this.left = true;
       }
 
-      if (key.keysym.scancode == SDL_Scancode.SDL_SCANCODE_RIGHT) {
+      if (key.keysym.scancode == SDL_SCANCODE_RIGHT) {
         this.right = true;
+      }
+
+      if (key.keysym.scancode == SDL_SCANCODE_SPACE) {
+        this.fire = true;
       }
     }
   }
