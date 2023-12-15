@@ -1,28 +1,26 @@
 package org.example;
 
+import static io.github.libsdl4j.api.event.SdlEvents.SDL_PollEvent;
+import static io.github.libsdl4j.api.scancode.SDL_Scancode.*;
+
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import io.github.libsdl4j.api.event.SDL_Event;
 import io.github.libsdl4j.api.event.SDL_EventType;
 import io.github.libsdl4j.api.event.events.SDL_KeyboardEvent;
-import io.github.libsdl4j.api.scancode.SDL_Scancode;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
-import static io.github.libsdl4j.api.event.SdlEvents.SDL_PollEvent;
-import static io.github.libsdl4j.api.scancode.SDL_Scancode.*;
 
 @Slf4j
 @Singleton
-@RequiredArgsConstructor(onConstructor_ = {@Inject})
 public class Input {
 
+  public final boolean[] keyboard = new boolean[350];
   private final SDL_Event event;
-  public boolean up;
-  public boolean down;
-  public boolean left;
-  public boolean right;
-  public boolean fire;
+
+  @Inject
+  public Input(SDL_Event event) {
+    this.event = event;
+  }
 
   public void doInput() {
     while (SDL_PollEvent(event) != 0) {
@@ -35,50 +33,12 @@ public class Input {
   }
 
   private void doKeyUp(SDL_KeyboardEvent key) {
-    if (key.repeat == 0) {
-      if (key.keysym.scancode == SDL_SCANCODE_UP) {
-        this.up = false;
-      }
-
-      if (key.keysym.scancode == SDL_SCANCODE_DOWN) {
-        this.down = false;
-      }
-
-      if (key.keysym.scancode == SDL_SCANCODE_LEFT) {
-        this.left = false;
-      }
-
-      if (key.keysym.scancode == SDL_SCANCODE_RIGHT) {
-        this.right = false;
-      }
-
-      if (key.keysym.scancode == SDL_SCANCODE_SPACE) {
-        this.fire = false;
-      }
-    }
+    if (key.repeat == 0 && key.keysym.scancode < keyboard.length)
+      this.keyboard[key.keysym.scancode] = false;
   }
 
   private void doKeyDown(SDL_KeyboardEvent key) {
-    if (key.repeat == 0) {
-      if (key.keysym.scancode == SDL_SCANCODE_UP) {
-        this.up = true;
-      }
-
-      if (key.keysym.scancode == SDL_SCANCODE_DOWN) {
-        this.down = true;
-      }
-
-      if (key.keysym.scancode == SDL_SCANCODE_LEFT) {
-        this.left = true;
-      }
-
-      if (key.keysym.scancode == SDL_SCANCODE_RIGHT) {
-        this.right = true;
-      }
-
-      if (key.keysym.scancode == SDL_SCANCODE_SPACE) {
-        this.fire = true;
-      }
-    }
+    if (key.repeat == 0 && key.keysym.scancode < keyboard.length)
+      this.keyboard[key.keysym.scancode] = true;
   }
 }
