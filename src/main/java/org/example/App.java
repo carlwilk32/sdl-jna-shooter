@@ -34,6 +34,7 @@ public class App {
       draw.presentScene();
 
       // cap frames to 60 FPS
+      // TODO: maybe introduce independent timing for physics https://thenumb.at/cpp-course/sdl2/08/08.html
       var end = SDL_GetPerformanceCounter();
       var elapsedMs = (end - start) / (double) SDL_GetPerformanceFrequency();
       SDL_Delay((int) Math.floor(desiredFrameDuration - elapsedMs));
