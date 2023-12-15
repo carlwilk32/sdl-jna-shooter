@@ -5,8 +5,11 @@ import com.google.inject.Injector;
 
 public class Main {
   public static void main(String[] args) {
-//    NativeLibrary.addSearchPath("SDL2", "/usr/local/lib/");
-    Injector injector = Guice.createInjector(new SdlModule(), new AppModule());
+    //    NativeLibrary.addSearchPath("SDL2", "/usr/local/lib/");
+    Injector injector = Guice.createInjector(
+            new SdlModule(),
+            new AppModule(),
+            new StageModule());
     App app = injector.getInstance(App.class);
     app.start();
   }
