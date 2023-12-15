@@ -1,4 +1,4 @@
-package org.example;
+package org.example.di;
 
 import static io.github.libsdl4j.api.error.SdlError.SDL_GetError;
 import static io.github.libsdl4j.api.render.SdlRender.SDL_CreateRenderer;
@@ -12,6 +12,7 @@ import io.github.libsdl4j.api.render.SDL_Renderer;
 import io.github.libsdl4j.api.render.SDL_RendererFlags;
 import io.github.libsdl4j.api.video.SDL_Window;
 import io.github.libsdl4j.api.video.SdlVideoConst;
+import org.example.AppConfig;
 import org.example.jna.SDL_imageLibrary;
 
 public class SdlModule extends AbstractModule {

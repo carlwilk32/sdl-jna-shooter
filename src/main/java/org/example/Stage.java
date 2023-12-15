@@ -1,20 +1,18 @@
 package org.example;
 
+import static io.github.libsdl4j.api.render.SdlRender.SDL_QueryTexture;
+import static io.github.libsdl4j.api.scancode.SDL_Scancode.*;
+
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 import com.sun.jna.ptr.IntByReference;
 import io.github.libsdl4j.api.render.SDL_Texture;
+import java.util.Deque;
+import java.util.Random;
+import java.util.concurrent.ConcurrentLinkedDeque;
 import lombok.RequiredArgsConstructor;
 import org.example.model.CommonGameEntity;
-
-import java.util.Deque;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.concurrent.ConcurrentLinkedDeque;
-
-import static io.github.libsdl4j.api.render.SdlRender.SDL_QueryTexture;
-import static io.github.libsdl4j.api.scancode.SDL_Scancode.*;
 
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = {@Inject})
@@ -27,12 +25,41 @@ public class Stage {
   @Named("PlayerBullet")
   private final SDL_Texture playerBulletSprite;
 
+  @Named("Enemy")
+  private final SDL_Texture enemySprite;
+
   private Deque<CommonGameEntity> fighters, bullets;
   private CommonGameEntity player;
+  private int enemySpawnTimer;
 
   public void logic() {
     doPlayer();
+    doFighters();
     doBullets();
+    spawnEnemies();
+  }
+
+  private void spawnEnemies() {
+    if (--enemySpawnTimer <= 0) {
+      var enemy = new CommonGameEntity(enemySprite);
+      fighters.add(enemy);
+      enemy.x = conf.WINDOW_WIDTH;
+      enemy.y = new Random().nextInt(0, conf.WINDOW_HEIGHT);
+      assignHeightAndWidth(enemy);
+      enemy.dx = -(2 + new Random().nextInt(0, 4));
+
+      enemySpawnTimer = (int) (30 + (Math.random() % conf.GAME_FPS));
+    }
+  }
+
+  private void doFighters() {
+    for (var e : fighters) {
+      e.x += e.dx;
+      e.y += e.dy;
+      if (e != player && e.x < -e.w) {
+        fighters.remove(e);
+      }
+    }
   }
 
   private void doBullets() {
@@ -54,9 +81,6 @@ public class Stage {
     if (input.keyboard[SDL_SCANCODE_RIGHT]) player.dx = conf.PLAYER_SPEED;
 
     if (input.keyboard[SDL_SCANCODE_SPACE] && player.reload == 0) fireBullet();
-
-    player.x += player.dx;
-    player.y += player.dy;
   }
 
   private void fireBullet() {
@@ -85,7 +109,7 @@ public class Stage {
   }
 
   public void draw() {
-    drawPlayer();
+    drawFighters();
     drawBullets();
   }
 
@@ -95,8 +119,8 @@ public class Stage {
     }
   }
 
-  private void drawPlayer() {
-    draw.blit(player.texture, player.x, player.y);
+  private void drawFighters() {
+    for (var it : fighters) draw.blit(it.texture, it.x, it.y);
   }
 
   public void initStage() {
@@ -104,6 +128,7 @@ public class Stage {
     this.bullets = new ConcurrentLinkedDeque<>();
 
     initPlayer();
+    enemySpawnTimer = 0;
   }
 
   private void initPlayer() {

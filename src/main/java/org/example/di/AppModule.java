@@ -1,4 +1,4 @@
-package org.example;
+package org.example.di;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.name.Names;

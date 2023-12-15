@@ -21,4 +21,6 @@ public class AppConfig {
   @Named("gameplay.speed.playerBullet")
   public final int PLAYER_BULLET_SPEED;
 
+  @Named("gameplay.FPS")
+  public final int GAME_FPS;
 }
