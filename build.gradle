@@ -50,4 +50,5 @@ jar {
 
 application {
     mainClass = 'org.example.Main'
+    applicationDefaultJvmArgs = ['-Djna.library.path=/usr/local/lib/', '-XstartOnFirstThread']
 }

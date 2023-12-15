@@ -5,6 +5,8 @@ import static io.github.libsdl4j.api.error.SdlError.SDL_GetError;
 import static io.github.libsdl4j.api.hints.SdlHints.SDL_SetHint;
 import static io.github.libsdl4j.api.mouse.SdlMouse.SDL_ShowCursor;
 import static io.github.libsdl4j.api.render.SdlRender.*;
+import static org.example.jna.SDL_imageLibrary.IMG_InitFlags.IMG_INIT_JPG;
+import static org.example.jna.SDL_imageLibrary.IMG_InitFlags.IMG_INIT_PNG;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -15,10 +17,10 @@ import io.github.libsdl4j.api.hints.SdlHintsConst;
 import io.github.libsdl4j.api.rect.SDL_Rect;
 import io.github.libsdl4j.api.render.SDL_Renderer;
 import io.github.libsdl4j.api.render.SDL_Texture;
-
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.jna.SDL_imageLibrary;
 
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = {@Inject})
@@ -26,7 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 public class Draw {
 
   private final SDL_Renderer renderer;
-  private final SDL_Image SdlImage;
+  private final SDL_imageLibrary sdlImage;
 
   public void initGraphics() {
     initSDL();
@@ -34,7 +36,7 @@ public class Draw {
   }
 
   private void initSdlImage() {
-    SdlImage.IMG_Init(SDL_Image.IMG_INIT_JPG | SDL_Image.IMG_INIT_PNG);
+    sdlImage.IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG);
   }
 
   private void initSDL() {
@@ -65,7 +67,7 @@ public class Draw {
           Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName);
       var imageFile = Utils.stream2file(resourceAsStream, "image", ".png");
       var fullPath = imageFile.toURI().getPath();
-      var texture = SdlImage.IMG_LoadTexture(renderer, fullPath);
+      var texture = sdlImage.IMG_LoadTexture(renderer, fullPath);
       if (texture == null) {
         log.error("Failed to load texture {}.", fileName);
         throw new RuntimeException();
@@ -98,9 +100,9 @@ public class Draw {
   }
 
   public void cleanup() {
-//    SdlImage.IMG_quit();
-//    SDL_DestroyRenderer(renderer);
-//    SDL_DestroyWindow(window);
-//    SDL_Quit();
+    //    SdlImage.IMG_Quit();
+    //    SDL_DestroyRenderer(renderer);
+    //    SDL_DestroyWindow(window);
+    //    SDL_Quit();
   }
 }

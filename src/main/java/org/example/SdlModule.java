@@ -6,12 +6,12 @@ import static io.github.libsdl4j.api.video.SdlVideo.SDL_CreateWindow;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
-import com.sun.jna.Native;
 import io.github.libsdl4j.api.event.SDL_Event;
 import io.github.libsdl4j.api.render.SDL_Renderer;
 import io.github.libsdl4j.api.render.SDL_RendererFlags;
 import io.github.libsdl4j.api.video.SDL_Window;
 import io.github.libsdl4j.api.video.SdlVideoConst;
+import org.example.jna.SDL_imageLibrary;
 
 public class SdlModule extends AbstractModule {
 
@@ -21,9 +21,14 @@ public class SdlModule extends AbstractModule {
   }
 
   @Provides
-  static SDL_Image providesSdlImageLibrary() {
-    return Native.load("SDL2_image", SDL_Image.class);
+  static SDL_imageLibrary providesSdlImageLibrary() {
+    return SDL_imageLibrary.INSTANCE;
   }
+
+  //  @Provides
+  //  static SDL2 providesSdlLibrary() {
+  //    return Native.load("SDL2", SDL2.class);
+  //  }
 
   @Provides
   static SDL_Renderer provideSdlRenderer(SDL_Window sdlWindow) {
