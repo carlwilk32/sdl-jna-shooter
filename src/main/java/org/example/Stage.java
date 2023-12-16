@@ -12,7 +12,8 @@ import java.util.Deque;
 import java.util.Random;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import lombok.RequiredArgsConstructor;
-import org.example.model.CommonGameEntity;
+import org.example.model.GameObject;
+import org.example.model.Owner;
 
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = {@Inject})
@@ -21,6 +22,7 @@ public class Stage {
   private final Draw draw;
   private final Input input;
   private final AppConfig conf;
+  private final Physics physics;
 
   @Named("PlayerBullet")
   private final SDL_Texture playerBulletSprite;
@@ -28,8 +30,8 @@ public class Stage {
   @Named("Enemy")
   private final SDL_Texture enemySprite;
 
-  private Deque<CommonGameEntity> fighters, bullets;
-  private CommonGameEntity player;
+  private Deque<GameObject> fighters, bullets;
+  private GameObject player;
   private int enemySpawnTimer;
 
   public void logic() {
@@ -41,8 +43,10 @@ public class Stage {
 
   private void spawnEnemies() {
     if (--enemySpawnTimer <= 0) {
-      var enemy = new CommonGameEntity(enemySprite);
+      var enemy = new GameObject(enemySprite);
       fighters.add(enemy);
+      enemy.owner = Owner.ENEMY;
+      enemy.health = 1;
       enemy.x = conf.WINDOW_WIDTH;
       enemy.y = new Random().nextInt(0, conf.WINDOW_HEIGHT);
       assignHeightAndWidth(enemy);
@@ -56,7 +60,7 @@ public class Stage {
     for (var e : fighters) {
       e.x += e.dx;
       e.y += e.dy;
-      if (e != player && e.x < -e.w) {
+      if (e != player && (e.x < -e.w || e.health == 0)) {
         fighters.remove(e);
       }
     }
@@ -66,10 +70,22 @@ public class Stage {
     for (var b : bullets) {
       b.x += b.dx;
       b.y += b.dy;
-      if (b.x > conf.WINDOW_WIDTH) {
+      if (hit(b) || b.x > conf.WINDOW_WIDTH) {
         bullets.remove(b);
       }
     }
+  }
+
+  private boolean hit(GameObject entity) {
+    for (var fighter : fighters) {
+      if (entity.owner != fighter.owner
+              && physics.collisionDetect(entity, fighter)) {
+        entity.health = 0;
+        fighter.health = 0;
+        return true;
+      }
+    }
+    return false;
   }
 
   private void doPlayer() {
@@ -84,9 +100,10 @@ public class Stage {
   }
 
   private void fireBullet() {
-    var bullet = new CommonGameEntity(playerBulletSprite);
+    var bullet = new GameObject(playerBulletSprite);
     bullets.add(bullet);
 
+    bullet.owner = Owner.PLAYER;
     bullet.x = player.x + player.w / 2;
     bullet.y = player.y;
     bullet.dx = conf.PLAYER_BULLET_SPEED;
@@ -98,7 +115,7 @@ public class Stage {
     player.reload = 8;
   }
 
-  private void assignHeightAndWidth(CommonGameEntity assignee) {
+  private void assignHeightAndWidth(GameObject assignee) {
     var wRef = new IntByReference();
     var hRef = new IntByReference();
 
@@ -132,12 +149,13 @@ public class Stage {
   }
 
   private void initPlayer() {
-    player = new CommonGameEntity(draw.loadTexture("gfx/f_16_2.png"));
+    player = new GameObject(draw.loadTexture("gfx/f_16_2.png"));
     fighters.add(player);
 
     player.health = 1;
     player.x = 100;
     player.y = 250;
+    player.owner = Owner.PLAYER;
     assignHeightAndWidth(player);
   }
 }
