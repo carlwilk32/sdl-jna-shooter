@@ -42,14 +42,16 @@ public class Stage {
   }
 
   private void spawnEnemies() {
+    var borderThreshold = 10; // pixels, allow some space from screen edges
     if (--enemySpawnTimer <= 0) {
       var enemy = new GameObject(enemySprite);
       fighters.add(enemy);
       enemy.owner = Owner.ENEMY;
       enemy.health = 1;
       enemy.x = conf.WINDOW_WIDTH;
-      enemy.y = new Random().nextInt(0, conf.WINDOW_HEIGHT);
       assignHeightAndWidth(enemy);
+      enemy.y =
+          new Random().nextInt(borderThreshold, conf.WINDOW_HEIGHT - enemy.h - borderThreshold);
       enemy.dx = -(2 + new Random().nextInt(0, 4));
 
       enemySpawnTimer = (int) (30 + (Math.random() % conf.GAME_FPS));
@@ -78,8 +80,7 @@ public class Stage {
 
   private boolean hit(GameObject entity) {
     for (var fighter : fighters) {
-      if (entity.owner != fighter.owner
-              && physics.collisionDetect(entity, fighter)) {
+      if (entity.owner != fighter.owner && physics.collisionDetect(entity, fighter)) {
         entity.health = 0;
         fighter.health = 0;
         return true;
