@@ -1,13 +1,11 @@
 package org.example;
 
-import static io.github.libsdl4j.api.render.SdlRender.SDL_QueryTexture;
 import static io.github.libsdl4j.api.scancode.SDL_Scancode.*;
 import static org.example.model.Owner.PLAYER;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
-import com.sun.jna.ptr.IntByReference;
 import io.github.libsdl4j.api.render.SDL_Texture;
 import java.util.Deque;
 import java.util.Random;
@@ -70,14 +68,14 @@ public class Stage {
             .toBuilder().health(1).owner(Owner.ENEMY).x(enemy.x).y(enemy.y).build();
     bullets.add(bullet);
 
-    bullet.x += (enemy.w / 2) - (bullet.w / 2);
-    bullet.y += (enemy.h / 2) - (bullet.h / 2);
+    bullet.x += (enemy.w / 2.0) - (bullet.w / 2.0);
+    bullet.y += (enemy.h / 2.0) - (bullet.h / 2.0);
 
     var dxDy =
-        physics.calcSlope(player.x + (player.w / 2), player.y + (player.h / 2), enemy.x, enemy.y);
+        physics.calcSlope(
+            player.x + (player.w / 2.0), player.y + (player.h / 2.0), enemy.x, enemy.y);
     bullet.dx = dxDy.first() * conf.ENEMY_BULLET_SPEED;
     bullet.dy = dxDy.second() * conf.ENEMY_BULLET_SPEED;
-    log.info("bullet dx={}, dy={}", bullet.dx, bullet.dy);
 
     enemy.reload = (new Random().nextInt(0, conf.GAME_FPS * 2));
   }
@@ -86,7 +84,7 @@ public class Stage {
     if (player != null) {
       if (player.x < 0) player.x = 0;
       if (player.y < 0) player.y = 0;
-      if (player.x > conf.WINDOW_WIDTH / 2) player.x = conf.WINDOW_WIDTH / 2;
+      if (player.x > conf.WINDOW_WIDTH / 2.0) player.x = conf.WINDOW_WIDTH / 2.0;
       if (player.y > conf.WINDOW_HEIGHT - player.h) player.y = conf.WINDOW_HEIGHT - player.h;
     }
   }
@@ -177,31 +175,11 @@ public class Stage {
             .dx(conf.PLAYER_BULLET_SPEED)
             .owner(PLAYER)
             // maybe adjust to SDL_Rect, i.e. keep predefined sizes of every game object
-            .x(1 + player.x + player.w / 2)
-            .y(player.y + 2 * (player.h / 3) - (bullet.h / 2))
+            .x(1 + player.x + player.w / 2.0)
+            .y(player.y + 2 * (player.h / 3.0) - (bullet.h / 2.0))
             .build();
     bullets.add(bullet);
     player.reload = 8;
-  }
-
-  private void assignHeightAndWidth(GameObject assignee) {
-    var wRef = new IntByReference();
-    var hRef = new IntByReference();
-
-    SDL_QueryTexture(assignee.texture, null, null, wRef, hRef);
-
-    assignee.w = wRef.getValue();
-    assignee.h = hRef.getValue();
-  }
-
-  private void assignHeightAndWidth(GameObject.GameObjectBuilder assignee, SDL_Texture texture) {
-    var wRef = new IntByReference();
-    var hRef = new IntByReference();
-
-    SDL_QueryTexture(texture, null, null, wRef, hRef);
-
-    assignee.w(wRef.getValue());
-    assignee.h(hRef.getValue());
   }
 
   public void draw() {
@@ -211,12 +189,12 @@ public class Stage {
 
   private void drawBullets() {
     for (var b : bullets) {
-      draw.blit(b.texture, b.x, b.y);
+      draw.blit(b.texture, (int) b.x, (int) b.y);
     }
   }
 
   private void drawFighters() {
-    for (var it : fighters) draw.blit(it.texture, it.x, it.y);
+    for (var it : fighters) draw.blit(it.texture, (int) it.x, (int) it.y);
   }
 
   public void resetStage() {
@@ -230,12 +208,9 @@ public class Stage {
   }
 
   private void initPlayer() {
-    player = new GameObject(playerSprite).toBuilder()
-            .health(1)
-            .owner(PLAYER)
-            .x(100)
-            .y(conf.WINDOW_HEIGHT / 2)
-            .build();
+    player =
+        new GameObject(playerSprite)
+            .toBuilder().health(1).owner(PLAYER).x(100).y(conf.WINDOW_HEIGHT / 2.0).build();
     fighters.add(player);
   }
 }

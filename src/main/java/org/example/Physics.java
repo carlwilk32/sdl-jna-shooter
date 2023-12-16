@@ -16,10 +16,10 @@ public class Physics {
     return hit;
   }
 
-  public Pair<Integer, Integer> calcSlope(int x1, int y1, int x2, int y2) {
+  public Pair<Double, Double> calcSlope(double x1, double y1, double x2, double y2) {
     var steps = Math.max(Math.abs(x1 - x2), Math.abs(y1 - y2));
 
-    if (steps == 0) return new Pair<>(0, 0);
+    if (steps == 0) return new Pair<>(0.0, 0.0);
 
     var dx = (x1 - x2) / steps;
     var dy = (y1 - y2) / steps;

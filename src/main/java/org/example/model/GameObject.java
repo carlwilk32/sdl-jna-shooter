@@ -11,12 +11,12 @@ import static io.github.libsdl4j.api.render.SdlRender.SDL_QueryTexture;
 @Builder(toBuilder = true, builderMethodName = "")
 public class GameObject {
   public final SDL_Texture texture;
-  public int x;
-  public int y;
+  public double x;
+  public double y;
   public int w;
   public int h;
-  public int dx;
-  public int dy;
+  public double dx;
+  public double dy;
   public int health;
   public int reload;
   public Owner owner;
