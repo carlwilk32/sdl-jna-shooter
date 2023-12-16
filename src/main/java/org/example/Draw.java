@@ -1,6 +1,7 @@
 package org.example;
 
 import static io.github.libsdl4j.api.Sdl.SDL_Init;
+import static io.github.libsdl4j.api.blendmode.SDL_BlendMode.SDL_BLENDMODE_ADD;
 import static io.github.libsdl4j.api.error.SdlError.SDL_GetError;
 import static io.github.libsdl4j.api.hints.SdlHints.SDL_SetHint;
 import static io.github.libsdl4j.api.mouse.SdlMouse.SDL_ShowCursor;
@@ -12,6 +13,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.sun.jna.ptr.IntByReference;
 import io.github.libsdl4j.api.SdlSubSystemConst;
+import io.github.libsdl4j.api.blendmode.SDL_BlendMode;
 import io.github.libsdl4j.api.event.SdlEventsConst;
 import io.github.libsdl4j.api.hints.SdlHintsConst;
 import io.github.libsdl4j.api.rect.SDL_Rect;
@@ -21,6 +23,7 @@ import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.jna.SDL_imageLibrary;
+import org.intellij.lang.annotations.MagicConstant;
 
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = {@Inject})
@@ -108,5 +111,9 @@ public class Draw {
 
   public void renderBackground(SDL_Texture background, SDL_Rect sdlRect) {
     SDL_RenderCopy(renderer, background, null, sdlRect);
+  }
+
+  public void setBlenMode(@MagicConstant(valuesFromClass = SDL_BlendMode.class) int blendMode) {
+    SDL_SetRenderDrawBlendMode(renderer, blendMode);
   }
 }

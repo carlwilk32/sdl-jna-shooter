@@ -18,6 +18,7 @@ public class StageModule extends AbstractModule {
   private static final String BACKGROUND_BACK = "gfx/1.png";
   private static final String BACKGROUND_SKY = "gfx/2.png";
   private static final String BACKGROUND_MASK = "gfx/3.png";
+  private static final String EXPLOSION_MASK = "gfx/explosion.png";
 
   @Provides
   @Singleton
@@ -67,4 +68,12 @@ public class StageModule extends AbstractModule {
   static SDL_Texture provideBackgroundMask(Draw draw) {
     return draw.loadTexture(BACKGROUND_MASK);
   }
+
+  @Provides
+  @Singleton
+  @Named("Explosion")
+  static SDL_Texture provideExplosionTexture(Draw draw) {
+    return draw.loadTexture(EXPLOSION_MASK);
+  }
+
 }

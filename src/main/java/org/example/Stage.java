@@ -1,11 +1,15 @@
 package org.example;
 
+import static io.github.libsdl4j.api.blendmode.SDL_BlendMode.SDL_BLENDMODE_ADD;
+import static io.github.libsdl4j.api.blendmode.SDL_BlendMode.SDL_BLENDMODE_NONE;
+import static io.github.libsdl4j.api.render.SdlRender.*;
 import static io.github.libsdl4j.api.scancode.SDL_Scancode.*;
 import static org.example.model.Owner.PLAYER;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
+import io.github.libsdl4j.api.blendmode.SDL_BlendMode;
 import io.github.libsdl4j.api.rect.SDL_Rect;
 import io.github.libsdl4j.api.render.SDL_Texture;
 import java.util.Deque;
@@ -13,6 +17,8 @@ import java.util.Random;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.model.Color;
+import org.example.model.Explosion;
 import org.example.model.GameObject;
 import org.example.model.Owner;
 
@@ -47,7 +53,11 @@ public class Stage {
   @Named("BackgroundMask")
   private final SDL_Texture background3;
 
+  @Named("Explosion")
+  private final SDL_Texture explosionTexture;
+
   private Deque<GameObject> fighters, bullets;
+  private Deque<Explosion> explosions;
   private GameObject player;
   private int enemySpawnTimer;
   private int stageResetTimer;
@@ -63,10 +73,44 @@ public class Stage {
     doEnemies();
     doFighters();
     doBullets();
+    doExplosions();
     spawnEnemies();
     clipPlayer();
     if (player == null && --stageResetTimer <= 0) {
       resetStage();
+    }
+  }
+
+  private void doExplosions() {
+    for (var explosion : explosions) {
+      explosion.x += explosion.dx;
+      explosion.y += explosion.dy;
+      if (--explosion.alpha <= 0) {
+        explosions.remove(explosion);
+      }
+    }
+  }
+
+  private void addExplosions(double x, double y, int num) {
+    var random = new Random();
+    for (var i = 0; i < num; i++) {
+      var color =
+          switch (random.nextInt() % 4) {
+            case 0 -> new Color(255, 0, 0);
+            case 1 -> new Color(255, 128, 0);
+            case 2 -> new Color(255, 255, 0);
+            default -> new Color(255, 255, 255);
+          };
+      var explosion =
+          Explosion.builder()
+              .x(x + (random.nextInt() % 32) - (random.nextInt() % 32))
+              .y(y + (random.nextInt() % 32) - (random.nextInt() % 32))
+              .dx(((random.nextInt() % 10) - (random.nextInt() % 10)) / 10.0)
+              .dy(((random.nextInt() % 10) - (random.nextInt() % 10)) / 10.0)
+              .alpha(random.nextInt() % conf.GAME_FPS * 3)
+              .color(color)
+              .build();
+      explosions.add(explosion);
     }
   }
 
@@ -175,6 +219,7 @@ public class Stage {
       if (entity.owner != fighter.owner && physics.collisionDetect(entity, fighter)) {
         entity.health = 0;
         fighter.health = 0;
+        addExplosions(fighter.x, fighter.y, 32);
         return true;
       }
     }
@@ -217,7 +262,23 @@ public class Stage {
     drawBackground(maskX, background2);
     drawBackground(skyX, background3);
     drawFighters();
+    drawExplosions();
     drawBullets();
+  }
+
+  private void drawExplosions() {
+    draw.setBlenMode(SDL_BLENDMODE_ADD);
+    SDL_SetTextureBlendMode(explosionTexture, SDL_BLENDMODE_ADD);
+    for (var explosion : explosions) {
+      SDL_SetTextureColorMod(
+          explosionTexture,
+          (byte) explosion.color.r(),
+          (byte) explosion.color.g(),
+          (byte) explosion.color.b());
+      SDL_SetTextureAlphaMod(explosionTexture, (byte) explosion.alpha);
+      draw.blit(explosionTexture, (int) explosion.x, (int) explosion.y);
+    }
+    draw.setBlenMode(SDL_BLENDMODE_NONE);
   }
 
   private void drawBackground(int xAnchor, SDL_Texture texture) {
@@ -244,6 +305,7 @@ public class Stage {
   public void resetStage() {
     this.fighters = new ConcurrentLinkedDeque<>();
     this.bullets = new ConcurrentLinkedDeque<>();
+    this.explosions = new ConcurrentLinkedDeque<>();
 
     initPlayer();
 
