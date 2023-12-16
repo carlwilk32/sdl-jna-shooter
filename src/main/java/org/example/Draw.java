@@ -105,4 +105,8 @@ public class Draw {
     //    SDL_DestroyWindow(window);
     //    SDL_Quit();
   }
+
+  public void renderBackground(SDL_Texture background, SDL_Rect sdlRect) {
+    SDL_RenderCopy(renderer, background, null, sdlRect);
+  }
 }

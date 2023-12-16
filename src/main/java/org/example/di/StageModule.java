@@ -15,6 +15,9 @@ public class StageModule extends AbstractModule {
   private static final String ENEMY_SPRITE = "gfx/su27.png";
   private static final String PLAYER_SPRITE = "gfx/f_16_2.png";
   private static final String ENEMY_BULLET_SPRITE = "gfx/BulletC6.png";
+  private static final String BACKGROUND_BACK = "gfx/1.png";
+  private static final String BACKGROUND_SKY = "gfx/2.png";
+  private static final String BACKGROUND_MASK = "gfx/3.png";
 
   @Provides
   @Singleton
@@ -42,5 +45,26 @@ public class StageModule extends AbstractModule {
   @Named("EnemyBullet")
   static SDL_Texture provideEnemyBullet(Draw draw) {
     return draw.loadTexture(ENEMY_BULLET_SPRITE);
+  }
+
+  @Provides
+  @Singleton
+  @Named("Background")
+  static SDL_Texture provideBackground(Draw draw) {
+    return draw.loadTexture(BACKGROUND_BACK);
+  }
+
+  @Provides
+  @Singleton
+  @Named("BackgroundSky")
+  static SDL_Texture provideBackgroundSky(Draw draw) {
+    return draw.loadTexture(BACKGROUND_SKY);
+  }
+
+  @Provides
+  @Singleton
+  @Named("BackgroundMask")
+  static SDL_Texture provideBackgroundMask(Draw draw) {
+    return draw.loadTexture(BACKGROUND_MASK);
   }
 }

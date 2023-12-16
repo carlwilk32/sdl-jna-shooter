@@ -6,6 +6,7 @@ import static org.example.model.Owner.PLAYER;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
+import io.github.libsdl4j.api.rect.SDL_Rect;
 import io.github.libsdl4j.api.render.SDL_Texture;
 import java.util.Deque;
 import java.util.Random;
@@ -37,12 +38,27 @@ public class Stage {
   @Named("Player")
   private final SDL_Texture playerSprite;
 
+  @Named("Background")
+  private final SDL_Texture background1;
+
+  @Named("BackgroundSky")
+  private final SDL_Texture background2;
+
+  @Named("BackgroundMask")
+  private final SDL_Texture background3;
+
   private Deque<GameObject> fighters, bullets;
   private GameObject player;
   private int enemySpawnTimer;
   private int stageResetTimer;
+  private int backgroundX;
+  private int skyX;
+  private int maskX;
 
   public void logic() {
+    doBackground();
+    doSky();
+    doMask();
     doPlayer();
     doEnemies();
     doFighters();
@@ -52,6 +68,20 @@ public class Stage {
     if (player == null && --stageResetTimer <= 0) {
       resetStage();
     }
+  }
+
+  private void doSky() {
+    if (--skyX < -conf.WINDOW_WIDTH) skyX = 0;
+  }
+
+  private void doMask() {
+    maskX -= 2;
+    if (--maskX < -conf.WINDOW_WIDTH) maskX = 0;
+  }
+
+  private void doBackground() {
+    backgroundX -= 4;
+    if (backgroundX < -conf.WINDOW_WIDTH) backgroundX = 0;
   }
 
   private void doEnemies() {
@@ -183,8 +213,22 @@ public class Stage {
   }
 
   public void draw() {
+    drawBackground(backgroundX, background1);
+    drawBackground(maskX, background2);
+    drawBackground(skyX, background3);
     drawFighters();
     drawBullets();
+  }
+
+  private void drawBackground(int xAnchor, SDL_Texture texture) {
+    var sdlRect = new SDL_Rect();
+    for (var x = xAnchor; x < conf.WINDOW_WIDTH; x += conf.WINDOW_WIDTH) {
+      sdlRect.x = x;
+      sdlRect.y = 0;
+      sdlRect.w = conf.WINDOW_WIDTH;
+      sdlRect.h = conf.WINDOW_HEIGHT;
+      draw.renderBackground(texture, sdlRect);
+    }
   }
 
   private void drawBullets() {
@@ -204,7 +248,7 @@ public class Stage {
     initPlayer();
 
     enemySpawnTimer = 0;
-    stageResetTimer = conf.GAME_FPS * 2;
+    stageResetTimer = conf.GAME_FPS * 3;
   }
 
   private void initPlayer() {
