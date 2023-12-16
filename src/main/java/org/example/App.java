@@ -19,7 +19,7 @@ public class App {
 
   public void start() {
     draw.initGraphics();
-    stage.initStage();
+    stage.resetStage();
 
     // ~16.6667 ms per frame
     final double desiredFrameDuration = 1000.0 / conf.GAME_FPS;

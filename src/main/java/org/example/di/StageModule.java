@@ -11,8 +11,10 @@ import org.example.Draw;
 @Slf4j
 public class StageModule extends AbstractModule {
 
-  public static final String PLAYER_BULLET_SPRITE = "gfx/bullet.png";
-  public static final String ENEMY_SPRITE = "gfx/su27.png";
+  private static final String PLAYER_BULLET_SPRITE = "gfx/bullet3.png";
+  private static final String ENEMY_SPRITE = "gfx/su27.png";
+  private static final String PLAYER_SPRITE = "gfx/f_16_2.png";
+  private static final String ENEMY_BULLET_SPRITE = "gfx/BulletC6.png";
 
   @Provides
   @Singleton
@@ -26,5 +28,19 @@ public class StageModule extends AbstractModule {
   @Named("Enemy")
   static SDL_Texture provideEnemyTexture(Draw draw) {
     return draw.loadTexture(ENEMY_SPRITE);
+  }
+
+  @Provides
+  @Singleton
+  @Named("Player")
+  static SDL_Texture providePlayerTexture(Draw draw) {
+    return draw.loadTexture(PLAYER_SPRITE);
+  }
+
+  @Provides
+  @Singleton
+  @Named("EnemyBullet")
+  static SDL_Texture provideEnemyBullet(Draw draw) {
+    return draw.loadTexture(ENEMY_BULLET_SPRITE);
   }
 }
