@@ -1,3 +1,5 @@
+import org.gradle.nativeplatform.platform.internal.DefaultNativePlatform
+
 plugins {
     id 'java'
     id 'application'
@@ -50,5 +52,7 @@ jar {
 
 application {
     mainClass = 'org.example.Main'
-    applicationDefaultJvmArgs = ['-Djna.library.path=/usr/local/lib/', '-XstartOnFirstThread']
+    if (DefaultNativePlatform.currentOperatingSystem.isMacOsX()) {
+        applicationDefaultJvmArgs = ["-XstartOnFirstThread"]
+    }
 }
