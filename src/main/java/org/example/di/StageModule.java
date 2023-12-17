@@ -11,7 +11,7 @@ import org.example.Draw;
 @Slf4j
 public class StageModule extends AbstractModule {
 
-  private static final String PLAYER_BULLET_SPRITE = "gfx/bullet3.png";
+  private static final String PLAYER_BULLET_SPRITE = "gfx/Bullet3.png";
   private static final String ENEMY_SPRITE = "gfx/su27.png";
   private static final String PLAYER_SPRITE = "gfx/f_16_2.png";
   private static final String ENEMY_BULLET_SPRITE = "gfx/BulletC6.png";

@@ -37,6 +37,7 @@ public class App {
       // TODO: maybe introduce independent timing for physics https://thenumb.at/cpp-course/sdl2/08/08.html
       var end = SDL_GetPerformanceCounter();
       var elapsedMs = (end - start) / (double) SDL_GetPerformanceFrequency();
+//      log.info("FPS: {}", 1 / (desiredFrameDuration - elapsedMs) * 1000);
       SDL_Delay((int) Math.floor(desiredFrameDuration - elapsedMs));
     }
   }

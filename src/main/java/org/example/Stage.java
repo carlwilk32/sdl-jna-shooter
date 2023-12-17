@@ -9,7 +9,6 @@ import static org.example.model.Owner.PLAYER;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
-import io.github.libsdl4j.api.blendmode.SDL_BlendMode;
 import io.github.libsdl4j.api.rect.SDL_Rect;
 import io.github.libsdl4j.api.render.SDL_Texture;
 import java.util.Deque;
