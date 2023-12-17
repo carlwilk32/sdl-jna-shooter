@@ -102,6 +102,16 @@ public class Draw {
     }
   }
 
+  void blitRect(SDL_Texture texture, SDL_Rect src, int x, int y) {
+    var dest = new SDL_Rect();
+    dest.x = x;
+    dest.y = y;
+    dest.w = src.w;
+    dest.h = src.h;
+
+    SDL_RenderCopy(renderer, texture, src, dest);
+  }
+
   public void cleanup() {
     //    SdlImage.IMG_Quit();
     //    SDL_DestroyRenderer(renderer);

@@ -16,10 +16,7 @@ import java.util.Random;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.model.Color;
-import org.example.model.Explosion;
-import org.example.model.GameObject;
-import org.example.model.Owner;
+import org.example.model.*;
 
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = {@Inject})
@@ -57,6 +54,7 @@ public class Stage {
 
   private Deque<GameObject> fighters, bullets;
   private Deque<Explosion> explosions;
+  private Deque<Debris> wreckages;
   private GameObject player;
   private int enemySpawnTimer;
   private int stageResetTimer;
@@ -73,10 +71,48 @@ public class Stage {
     doFighters();
     doBullets();
     doExplosions();
+    doDebris();
     spawnEnemies();
     clipPlayer();
     if (player == null && --stageResetTimer <= 0) {
       resetStage();
+    }
+  }
+
+  private void doDebris() {
+    for (var debris : wreckages) {
+      debris.x += debris.dx;
+      debris.y += debris.dy;
+      debris.dy += 0.5;
+      if (--debris.life <= 0) {
+        wreckages.remove(debris);
+      }
+    }
+  }
+
+  private void addDebris(GameObject obj) {
+    var random = new Random();
+    var w = obj.w / 2;
+    var h = obj.h / 2;
+    for (var y = 0; y <= h; y += h) {
+      for (var x = 0; x <= w; x += w) {
+        var rect = new SDL_Rect();
+        rect.x = x;
+        rect.y = y;
+        rect.w = w;
+        rect.h = h;
+        var debris =
+            Debris.builder()
+                .life(conf.GAME_FPS * 2)
+                .texture(obj.texture)
+                .rect(rect)
+                .x(obj.x + w)
+                .y(obj.y + h)
+                .dx(random.nextInt() % 5 - random.nextInt() % 5)
+                .dy(-(5 + (random.nextInt() % 12)))
+                .build();
+        wreckages.add(debris);
+      }
     }
   }
 
@@ -219,6 +255,7 @@ public class Stage {
         entity.health = 0;
         fighter.health = 0;
         addExplosions(fighter.x, fighter.y, 32);
+        addDebris(fighter);
         return true;
       }
     }
@@ -261,8 +298,15 @@ public class Stage {
     drawBackground(maskX, background2);
     drawBackground(skyX, background3);
     drawFighters();
+    drawDebris();
     drawExplosions();
     drawBullets();
+  }
+
+  private void drawDebris() {
+    for (var debris : wreckages) {
+      draw.blitRect(debris.texture, debris.rect, (int) debris.x, (int) debris.y);
+    }
   }
 
   private void drawExplosions() {
@@ -305,6 +349,7 @@ public class Stage {
     this.fighters = new ConcurrentLinkedDeque<>();
     this.bullets = new ConcurrentLinkedDeque<>();
     this.explosions = new ConcurrentLinkedDeque<>();
+    this.wreckages = new ConcurrentLinkedDeque<>();
 
     initPlayer();
 
