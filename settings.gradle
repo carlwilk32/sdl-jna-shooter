@@ -1,2 +1,8 @@
-rootProject.name = 'java-sdl-shooter'
+pluginManagement {
+    repositories {
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
 
+rootProject.name = 'java-sdl-shooter'

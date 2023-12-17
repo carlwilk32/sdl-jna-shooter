@@ -1,0 +1,5 @@
+[
+  {
+    "interfaces":["org.example.jna.SDL_imageLibrary"]
+  }
+]

@@ -1,0 +1,37 @@
+{
+  "resources":{
+  "includes":[{
+    "pattern":"\\QMETA-INF/services/ch.qos.logback.classic.spi.Configurator\\E"
+  }, {
+    "pattern":"\\QMETA-INF/services/java.lang.System$LoggerFinder\\E"
+  }, {
+    "pattern":"\\QMETA-INF/services/java.time.zone.ZoneRulesProvider\\E"
+  }, {
+    "pattern":"\\QMETA-INF/services/org.slf4j.spi.SLF4JServiceProvider\\E"
+  }, {
+    "pattern":"\\Qapp.properties\\E"
+  }, {
+    "pattern":"\\Qcom/sun/jna/darwin-aarch64/libjnidispatch.jnilib\\E"
+  }, {
+    "pattern":"\\Qgfx/1.png\\E"
+  }, {
+    "pattern":"\\Qgfx/2.png\\E"
+  }, {
+    "pattern":"\\Qgfx/3.png\\E"
+  }, {
+    "pattern":"\\Qgfx/Bullet3.png\\E"
+  }, {
+    "pattern":"\\Qgfx/BulletC6.png\\E"
+  }, {
+    "pattern":"\\Qgfx/explosion.png\\E"
+  }, {
+    "pattern":"\\Qgfx/f_16_2.png\\E"
+  }, {
+    "pattern":"\\Qgfx/su27.png\\E"
+  }, {
+    "pattern":"\\Qlogback-test.xml\\E"
+  }, {
+    "pattern":"\\Qlogback.xml\\E"
+  }]},
+  "bundles":[]
+}

@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'application'
     id 'com.github.johnrengelman.shadow' version '8.1.1'
+    id 'org.graalvm.buildtools.native' version '0.9.28'
 }
 
 group = 'org.example'
@@ -11,9 +12,24 @@ repositories {
     mavenCentral()
 }
 
+graalvmNative {
+    binaries {
+        main {
+            javaLauncher = javaToolchains.launcherFor {
+                languageVersion = JavaLanguageVersion.of(21)
+                vendor = JvmVendorSpec.matching("Oracle")
+            }
+        }
+    }
+    binaries.all {
+        buildArgs.add("--verbose")
+    }
+}
+
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(21)
+        vendor = JvmVendorSpec.ORACLE
     }
 }
 
