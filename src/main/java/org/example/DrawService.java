@@ -27,7 +27,7 @@ import org.intellij.lang.annotations.MagicConstant;
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = {@Inject})
 @Slf4j
-public class Draw {
+public class DrawService {
 
   private final SDL_Renderer renderer;
   private final SDL_imageLibrary sdlImage;

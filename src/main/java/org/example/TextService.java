@@ -11,11 +11,11 @@ import lombok.RequiredArgsConstructor;
 
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = {@Inject})
-public class Text {
+public class TextService {
 
-  private static final int GLYPH_HEIGHT = 26;
-  private static final int GLYPH_WIDTH = 13;
-  private final Draw draw;
+  public static final int GLYPH_HEIGHT = 26;
+  public static final int GLYPH_WIDTH = 13;
+  private final DrawService draw;
 
   @Named("MainFont")
   private final SDL_Texture fontTexture;

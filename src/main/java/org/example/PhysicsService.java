@@ -8,7 +8,7 @@ import org.example.model.Pair;
 
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = {@Inject})
-public class Physics {
+public class PhysicsService {
 
   public boolean collisionDetect(GameObject obj1, GameObject obj2) {
     var hit = Math.max(obj1.x, obj2.x) < Math.min(obj1.x + obj1.w, obj2.x + obj2.w);

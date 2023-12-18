@@ -1,7 +1,6 @@
 package org.example;
 
 import static io.github.libsdl4j.api.event.SdlEvents.SDL_PollEvent;
-import static io.github.libsdl4j.api.scancode.SDL_Scancode.*;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -12,13 +11,13 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Singleton
-public class Input {
+public class InputService {
 
   public final boolean[] keyboard = new boolean[350];
   private final SDL_Event event;
 
   @Inject
-  public Input(SDL_Event event) {
+  public InputService(SDL_Event event) {
     this.event = event;
   }
 

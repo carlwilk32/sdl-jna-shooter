@@ -7,12 +7,13 @@ import static io.github.libsdl4j.api.scancode.SDL_Scancode.*;
 import static org.example.model.Owner.PLAYER;
 
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 import io.github.libsdl4j.api.rect.SDL_Rect;
 import io.github.libsdl4j.api.render.SDL_Texture;
-import java.util.Deque;
-import java.util.Random;
+
+import java.util.*;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,13 +22,15 @@ import org.example.model.*;
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = {@Inject})
 @Slf4j
-public class Stage {
+public class StageView {
 
-  private final Draw draw;
-  private final Input input;
+  private final DrawService draw;
+  private final InputService input;
   private final AppConfig conf;
-  private final Physics physics;
-  private final Text text;
+  private final PhysicsService physics;
+  private final TextService text;
+  private final Provider<HighscoresView> highscores;
+  private final Provider<App> app;
 
   @Named("PlayerBullet")
   private final SDL_Texture playerBulletSprite;
@@ -77,7 +80,10 @@ public class Stage {
     spawnEnemies();
     clipPlayer();
     if (player == null && --stageResetTimer <= 0) {
-      resetStage();
+//      highscoresProvider.get().addHighScore(this.score);
+//      highscoresProvider.get().init();
+      highscores.get().addHighScore(this.score);
+      highscores.get().init();
     }
   }
 
@@ -90,6 +96,14 @@ public class Stage {
         wreckages.remove(debris);
       }
     }
+  }
+
+  public void init() {
+//    appProvider.get().draw = this::draw;
+//    appProvider.get().logic = this::logic;
+    app.get().logic = this::logic;
+    app.get().draw = this::draw;
+    resetStage();
   }
 
   private void addDebris(GameObject obj) {

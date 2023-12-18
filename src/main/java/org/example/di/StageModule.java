@@ -6,7 +6,7 @@ import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 import io.github.libsdl4j.api.render.SDL_Texture;
 import lombok.extern.slf4j.Slf4j;
-import org.example.Draw;
+import org.example.DrawService;
 
 @Slf4j
 public class StageModule extends AbstractModule {
@@ -24,63 +24,63 @@ public class StageModule extends AbstractModule {
   @Provides
   @Singleton
   @Named("PlayerBullet")
-  static SDL_Texture provideBulletTexture(Draw draw) {
+  static SDL_Texture provideBulletTexture(DrawService draw) {
     return draw.loadTexture(PLAYER_BULLET_SPRITE);
   }
 
   @Provides
   @Singleton
   @Named("Enemy")
-  static SDL_Texture provideEnemyTexture(Draw draw) {
+  static SDL_Texture provideEnemyTexture(DrawService draw) {
     return draw.loadTexture(ENEMY_SPRITE);
   }
 
   @Provides
   @Singleton
   @Named("Player")
-  static SDL_Texture providePlayerTexture(Draw draw) {
+  static SDL_Texture providePlayerTexture(DrawService draw) {
     return draw.loadTexture(PLAYER_SPRITE);
   }
 
   @Provides
   @Singleton
   @Named("EnemyBullet")
-  static SDL_Texture provideEnemyBullet(Draw draw) {
+  static SDL_Texture provideEnemyBullet(DrawService draw) {
     return draw.loadTexture(ENEMY_BULLET_SPRITE);
   }
 
   @Provides
   @Singleton
   @Named("Background")
-  static SDL_Texture provideBackground(Draw draw) {
+  static SDL_Texture provideBackground(DrawService draw) {
     return draw.loadTexture(BACKGROUND_BACK);
   }
 
   @Provides
   @Singleton
   @Named("BackgroundSky")
-  static SDL_Texture provideBackgroundSky(Draw draw) {
+  static SDL_Texture provideBackgroundSky(DrawService draw) {
     return draw.loadTexture(BACKGROUND_SKY);
   }
 
   @Provides
   @Singleton
   @Named("BackgroundMask")
-  static SDL_Texture provideBackgroundMask(Draw draw) {
+  static SDL_Texture provideBackgroundMask(DrawService draw) {
     return draw.loadTexture(BACKGROUND_MASK);
   }
 
   @Provides
   @Singleton
   @Named("Explosion")
-  static SDL_Texture provideExplosionTexture(Draw draw) {
+  static SDL_Texture provideExplosionTexture(DrawService draw) {
     return draw.loadTexture(EXPLOSION_MASK);
   }
 
   @Provides
   @Singleton
   @Named("MainFont")
-  static SDL_Texture provideMainFont(Draw draw) {
+  static SDL_Texture provideMainFont(DrawService draw) {
     return draw.loadTexture(MAIN_FONT);
   }
 }
