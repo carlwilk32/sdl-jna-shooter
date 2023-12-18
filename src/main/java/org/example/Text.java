@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor(onConstructor_ = {@Inject})
 public class Text {
 
-  private static final int GLYPH_HEIGHT = 28;
+  private static final int GLYPH_HEIGHT = 26;
   private static final int GLYPH_WIDTH = 13;
   private final Draw draw;
 
