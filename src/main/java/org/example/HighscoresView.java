@@ -4,9 +4,12 @@ import static io.github.libsdl4j.api.scancode.SDL_Scancode.SDL_SCANCODE_SPACE;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+
 import java.util.*;
+
 import lombok.RequiredArgsConstructor;
 import org.example.model.Highscore;
+import org.example.model.TextAlignment;
 
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = {@Inject})
@@ -21,8 +24,7 @@ public class HighscoresView {
   private final TextService text;
   private final AppConfig conf;
 
-  private final PriorityQueue<Highscore> scores =
-      new PriorityQueue<>(Comparator.comparingInt(Highscore::score));
+  private final List<Highscore> scores = new ArrayList<>();
 
   private void logic() {
     if (input.keyboard[SDL_SCANCODE_SPACE]) {
@@ -35,29 +37,31 @@ public class HighscoresView {
   }
 
   private void drawHighscores() {
-    {
-      text.drawText(alignToCenter(TITLE_TEXT), 50, 255, 255, 255, TITLE_TEXT);
-      var verticalOffset = 150;
-      var num = 1;
-      var scoresArray = scores.toArray(new Highscore[0]);
-      for (var i = scores.size() - 1; i >= 0; i--) {
-        var scoreString = String.format("#%d ............. %03d", num, scoresArray[i].score());
-        text.drawText(alignToCenter(scoreString), verticalOffset, 255, 255, 255, scoreString);
-        verticalOffset += 50;
-        num++;
-      }
+    scores.sort(Comparator.comparingInt(Highscore::score).reversed());
+    if (scores.size() > NUM_HIGHSCORES) scores.remove(NUM_HIGHSCORES);
+
+    var center = conf.WINDOW_WIDTH / 2;
+    text.drawText(center, 50, 255, 255, 255, TextAlignment.CENTER, TITLE_TEXT);
+    var verticalOffset = 150;
+    for (var i = 0; i < scores.size(); i++) {
+      text.drawText(
+          center,
+          verticalOffset,
+          255,
+          255,
+          255,
+          TextAlignment.CENTER,
+          String.format("#%d ............. %03d", i + 1, scores.get(i).score()));
+      verticalOffset += 50;
     }
     text.drawText(
-        alignToCenter(FOOTER_TEXT),
+        center,
         conf.WINDOW_HEIGHT - 50 - TextService.GLYPH_HEIGHT,
         255,
         255,
         255,
+        TextAlignment.CENTER,
         FOOTER_TEXT);
-  }
-
-  private int alignToCenter(String s) {
-    return conf.WINDOW_WIDTH / 2 - (s.length() * TextService.GLYPH_WIDTH) / 2;
   }
 
   public void init() {
@@ -68,8 +72,5 @@ public class HighscoresView {
   public void addHighScore(int score) {
     if (score == 0) return;
     scores.add(new Highscore("plauyer", score));
-    if (scores.size() > NUM_HIGHSCORES) {
-      scores.poll();
-    }
   }
 }
