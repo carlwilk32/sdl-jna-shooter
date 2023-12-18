@@ -258,7 +258,7 @@ public class Stage {
         fighter.health = 0;
         addExplosions(fighter.x, fighter.y, 32);
         addDebris(fighter);
-        if (entity != player) {
+        if (fighter != player) {
           this.score++;
         }
         return true;
