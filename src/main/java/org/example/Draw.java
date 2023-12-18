@@ -1,7 +1,6 @@
 package org.example;
 
 import static io.github.libsdl4j.api.Sdl.SDL_Init;
-import static io.github.libsdl4j.api.blendmode.SDL_BlendMode.SDL_BLENDMODE_ADD;
 import static io.github.libsdl4j.api.error.SdlError.SDL_GetError;
 import static io.github.libsdl4j.api.hints.SdlHints.SDL_SetHint;
 import static io.github.libsdl4j.api.mouse.SdlMouse.SDL_ShowCursor;
@@ -102,7 +101,7 @@ public class Draw {
     }
   }
 
-  void blitRect(SDL_Texture texture, SDL_Rect src, int x, int y) {
+  public void blitRect(SDL_Texture texture, SDL_Rect src, int x, int y) {
     var dest = new SDL_Rect();
     dest.x = x;
     dest.y = y;
@@ -123,7 +122,7 @@ public class Draw {
     SDL_RenderCopy(renderer, background, null, sdlRect);
   }
 
-  public void setBlenMode(@MagicConstant(valuesFromClass = SDL_BlendMode.class) int blendMode) {
+  public void setBlendMode(@MagicConstant(valuesFromClass = SDL_BlendMode.class) int blendMode) {
     SDL_SetRenderDrawBlendMode(renderer, blendMode);
   }
 }

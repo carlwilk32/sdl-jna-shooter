@@ -27,6 +27,7 @@ public class Stage {
   private final Input input;
   private final AppConfig conf;
   private final Physics physics;
+  private final Text text;
 
   @Named("PlayerBullet")
   private final SDL_Texture playerBulletSprite;
@@ -61,6 +62,7 @@ public class Stage {
   private int backgroundX;
   private int skyX;
   private int maskX;
+  private int score;
 
   public void logic() {
     doBackground();
@@ -256,6 +258,9 @@ public class Stage {
         fighter.health = 0;
         addExplosions(fighter.x, fighter.y, 32);
         addDebris(fighter);
+        if (entity != player) {
+          this.score++;
+        }
         return true;
       }
     }
@@ -301,6 +306,11 @@ public class Stage {
     drawDebris();
     drawExplosions();
     drawBullets();
+    drawHUD();
+  }
+
+  private void drawHUD() {
+    text.drawText(10, 10, 255, 255, 255, String.format("SCORE: %03d", this.score));
   }
 
   private void drawDebris() {
@@ -310,7 +320,7 @@ public class Stage {
   }
 
   private void drawExplosions() {
-    draw.setBlenMode(SDL_BLENDMODE_ADD);
+    draw.setBlendMode(SDL_BLENDMODE_ADD);
     SDL_SetTextureBlendMode(explosionTexture, SDL_BLENDMODE_ADD);
     for (var explosion : explosions) {
       SDL_SetTextureColorMod(
@@ -321,7 +331,7 @@ public class Stage {
       SDL_SetTextureAlphaMod(explosionTexture, (byte) explosion.alpha);
       draw.blit(explosionTexture, (int) explosion.x, (int) explosion.y);
     }
-    draw.setBlenMode(SDL_BLENDMODE_NONE);
+    draw.setBlendMode(SDL_BLENDMODE_NONE);
   }
 
   private void drawBackground(int xAnchor, SDL_Texture texture) {
@@ -355,6 +365,7 @@ public class Stage {
 
     enemySpawnTimer = 0;
     stageResetTimer = conf.GAME_FPS * 3;
+    score = 0;
   }
 
   private void initPlayer() {

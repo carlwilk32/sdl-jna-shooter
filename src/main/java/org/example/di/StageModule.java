@@ -19,6 +19,7 @@ public class StageModule extends AbstractModule {
   private static final String BACKGROUND_SKY = "gfx/2.png";
   private static final String BACKGROUND_MASK = "gfx/3.png";
   private static final String EXPLOSION_MASK = "gfx/explosion.png";
+  private static final String MAIN_FONT = "fonts/inconsolata-ultra-bold-27-1235px-width-13px-glyph.png";
 
   @Provides
   @Singleton
@@ -76,4 +77,10 @@ public class StageModule extends AbstractModule {
     return draw.loadTexture(EXPLOSION_MASK);
   }
 
+  @Provides
+  @Singleton
+  @Named("MainFont")
+  static SDL_Texture provideMainFont(Draw draw) {
+    return draw.loadTexture(MAIN_FONT);
+  }
 }
