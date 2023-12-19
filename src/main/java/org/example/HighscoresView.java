@@ -4,10 +4,8 @@ import static io.github.libsdl4j.api.scancode.SDL_Scancode.SDL_SCANCODE_SPACE;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-
 import java.time.Instant;
 import java.util.*;
-
 import lombok.RequiredArgsConstructor;
 import org.example.model.Highscore;
 import org.example.model.TextAlignment;
@@ -26,7 +24,7 @@ public class HighscoresView {
   private final TextService text;
   private final AppConfig conf;
 
-  private final List<Highscore> scores = new LinkedList<>();
+  private final List<Highscore> scoresDescOrdered = new LinkedList<>();
 
   private Highscore newHighscore;
 
@@ -47,11 +45,11 @@ public class HighscoresView {
     var center = conf.WINDOW_WIDTH / 2;
     text.drawText(center, 50, 255, 255, 255, TextAlignment.CENTER, TITLE_TEXT);
     var verticalOffset = 150;
-    for (var i = 0; i < scores.size(); i++) {
+    for (var i = 0; i < scoresDescOrdered.size(); i++) {
       var r = 255;
       var g = 255;
       var b = 255;
-      var highscore = scores.get(i);
+      var highscore = scoresDescOrdered.get(i);
       if (newHighscore != null && newHighscore.equals(highscore)) {
         b = 0;
       }
@@ -82,24 +80,21 @@ public class HighscoresView {
 
   public void addHighScore(int newScore) {
     var maybeHighscore = new Highscore(newScore, Instant.now().getEpochSecond());
-    if (scores.size() < NUM_HIGHSCORES) {
-      scores.add(maybeHighscore);
-      scores.sort(Comparator.comparingInt(Highscore::getScore).reversed());
+    if (scoresDescOrdered.isEmpty()) {
+      scoresDescOrdered.add(maybeHighscore);
       this.newHighscore = maybeHighscore;
-    } else {
-      scores.sort(Comparator.comparingInt(Highscore::getScore).reversed());
-      var rightIdx = scores.size() - 1;
-      if (newScore > scores.get(rightIdx).getScore()) {
-        var leftIdx = 0;
-        while (leftIdx < rightIdx) {
-          var midIdx = (rightIdx + leftIdx) / 2;
-          if (newScore <= scores.get(midIdx).getScore()) leftIdx = midIdx + 1;
-          else rightIdx = midIdx;
-        }
-        scores.add(rightIdx, maybeHighscore);
-        scores.remove(NUM_HIGHSCORES);
-        this.newHighscore = maybeHighscore;
+    } else if (scoresDescOrdered.size() <= NUM_HIGHSCORES) {
+      var leftIdx = 0;
+      var rightIdx = scoresDescOrdered.size();
+      while (leftIdx < rightIdx) {
+        var midIdx = (rightIdx + leftIdx) / 2;
+        if (newScore <= scoresDescOrdered.get(midIdx).getScore()) leftIdx = midIdx + 1;
+        else rightIdx = midIdx;
       }
+      scoresDescOrdered.add(leftIdx, maybeHighscore);
+      this.newHighscore = maybeHighscore;
+
+      if (scoresDescOrdered.size() > NUM_HIGHSCORES) scoresDescOrdered.remove(NUM_HIGHSCORES);
     }
   }
 }
