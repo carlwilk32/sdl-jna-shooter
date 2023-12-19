@@ -80,8 +80,6 @@ public class StageView {
     spawnEnemies();
     clipPlayer();
     if (player == null && --stageResetTimer <= 0) {
-//      highscoresProvider.get().addHighScore(this.score);
-//      highscoresProvider.get().init();
       highscores.get().addHighScore(this.score);
       highscores.get().init();
     }
@@ -99,8 +97,6 @@ public class StageView {
   }
 
   public void init() {
-//    appProvider.get().draw = this::draw;
-//    appProvider.get().logic = this::logic;
     app.get().logic = this::logic;
     app.get().draw = this::draw;
     resetStage();

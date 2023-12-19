@@ -9,11 +9,14 @@ import io.github.libsdl4j.api.event.SDL_EventType;
 import io.github.libsdl4j.api.event.events.SDL_KeyboardEvent;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Arrays;
+
 @Slf4j
 @Singleton
 public class InputService {
 
   public final boolean[] keyboard = new boolean[350];
+  public String inputText;
   private final SDL_Event event;
 
   @Inject
@@ -27,6 +30,7 @@ public class InputService {
         case SDL_EventType.SDL_QUIT -> System.exit(0);
         case SDL_EventType.SDL_KEYDOWN -> doKeyDown(event.key);
         case SDL_EventType.SDL_KEYUP -> doKeyUp(event.key);
+        case SDL_EventType.SDL_TEXTINPUT -> inputText = Arrays.toString(event.text.text);
       }
     }
   }

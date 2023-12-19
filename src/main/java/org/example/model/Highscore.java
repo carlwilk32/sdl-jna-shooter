@@ -1,3 +1,12 @@
 package org.example.model;
 
-public record Highscore(String name, int score) {}
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
+
+@Data
+@RequiredArgsConstructor
+public class Highscore {
+  public final int score;
+  public final long timeStamp;
+  public String name;
+}
