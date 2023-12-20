@@ -7,7 +7,6 @@ import static io.github.libsdl4j.api.video.SdlVideo.SDL_CreateWindow;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
-import io.github.libsdl4j.api.event.SDL_Event;
 import io.github.libsdl4j.api.render.SDL_Renderer;
 import io.github.libsdl4j.api.render.SDL_RendererFlags;
 import io.github.libsdl4j.api.video.SDL_Window;
@@ -22,11 +21,6 @@ public class SdlModule extends AbstractModule {
   static SDL_imageLibrary providesSdlImageLibrary() {
     return SDL_imageLibrary.INSTANCE;
   }
-
-  //  @Provides
-  //  static SDL2 providesSdlLibrary() {
-  //    return Native.load("SDL2", SDL2.class);
-  //  }
 
   @Provides
   @Singleton

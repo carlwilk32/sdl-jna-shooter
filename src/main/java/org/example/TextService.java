@@ -8,6 +8,7 @@ import com.google.inject.name.Named;
 import io.github.libsdl4j.api.rect.SDL_Rect;
 import io.github.libsdl4j.api.render.SDL_Texture;
 import lombok.RequiredArgsConstructor;
+import org.example.model.Color;
 import org.example.model.TextAlignment;
 
 @Singleton
@@ -21,7 +22,7 @@ public class TextService {
   @Named("MainFont")
   private final SDL_Texture fontTexture;
 
-  public void drawText(int x, int y, int r, int g, int b, TextAlignment align, String text) {
+  public void drawText(int x, int y, Color color, TextAlignment align, String text) {
     var rect = new SDL_Rect();
     rect.w = GLYPH_WIDTH;
     rect.h = GLYPH_HEIGHT;
@@ -34,7 +35,7 @@ public class TextService {
           case LEFT -> x;
         };
 
-    SDL_SetTextureColorMod(fontTexture, (byte) r, (byte) g, (byte) b);
+    SDL_SetTextureColorMod(fontTexture, (byte) color.r(), (byte) color.g(), (byte) color.b());
 
     for (var i = 0; i < text.length(); i++) {
       var c = text.charAt(i);

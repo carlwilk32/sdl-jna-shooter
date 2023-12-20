@@ -320,7 +320,12 @@ public class StageView {
   }
 
   private void drawHUD() {
-    text.drawText(10, 10, 255, 255, 255, TextAlignment.LEFT, String.format("SCORE: %03d", this.score));
+    text.drawText(
+        10,
+        10,
+        Color.WHITE,
+        TextAlignment.LEFT,
+        String.format("SCORE: %03d", this.score));
   }
 
   private void drawDebris() {
