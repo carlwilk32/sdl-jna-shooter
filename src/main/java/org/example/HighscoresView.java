@@ -20,16 +20,15 @@ import org.example.model.TextAlignment;
 @RequiredArgsConstructor(onConstructor_ = {@Inject})
 public class HighscoresView {
 
-  public static final String TITLE_TEXT = "== HIGHSCORES ==";
-  public static final String FOOTER_TEXT = "PRESS FIRE TO PLAY!";
   private static final int NUM_HIGHSCORES = 9;
   private static final int NAME_LENGTH = 15;
 
   private final InputService input;
   private final StageView stage;
   private final App app;
-  private final TextService text;
+  private final TextService textService;
   private final AppConfig conf;
+  private final TextPlaceholders texts;
   private final SDL_Renderer renderer;
 
   private final List<Highscore> scoresDescOrdered = new LinkedList<>();
@@ -63,7 +62,7 @@ public class HighscoresView {
 
     if (input.keyboard[SDL_SCANCODE_RETURN]) {
       if (sb.isEmpty()) {
-        sb.append("Anonymous");
+        sb.append(texts.HIGHSCORES_ANONYMOUS);
       }
       scoresDescOrdered.get(newHighscoreIdx).name = sb.toString();
       sb = new StringBuilder();
@@ -79,9 +78,11 @@ public class HighscoresView {
   private void drawNameInput() {
     var center = conf.WINDOW_WIDTH / 2;
     var name = sb.toString();
-    text.drawText(center, 70, Color.WHITE, TextAlignment.CENTER, "YAY! IT'S A HIGHSCORE!");
-    text.drawText(center, 120, Color.WHITE, TextAlignment.CENTER, "ENTER YOUR NAME:");
-    text.drawText(center, 250, Color.WHITE, TextAlignment.CENTER, name);
+    textService.drawText(
+        center, 70, Color.WHITE, TextAlignment.CENTER, texts.HIGHSCORES_INPUT_TITLE);
+    textService.drawText(
+        center, 120, Color.WHITE, TextAlignment.CENTER, texts.HIGHSCORES_INPUT_NAME);
+    textService.drawText(center, 250, Color.WHITE, TextAlignment.CENTER, name);
 
     if (cursorBlink < conf.GAME_FPS / 2) {
       var sdlRect = new SDL_Rect();
@@ -94,16 +95,18 @@ public class HighscoresView {
       SDL_RenderFillRect(renderer, sdlRect);
     }
 
-    text.drawText(center, 625, Color.WHITE, TextAlignment.CENTER, "PRESS RETURN TO CONFIRM");
+    textService.drawText(
+        center, 625, Color.WHITE, TextAlignment.CENTER, texts.HIGHSCORES_INPUT_CONFIRM);
   }
 
   private void drawHighscores() {
     var center = conf.WINDOW_WIDTH / 2;
-    text.drawText(center, 50, Color.WHITE, TextAlignment.CENTER, TITLE_TEXT);
+    textService.drawText(
+        center, 50, Color.WHITE, TextAlignment.CENTER, texts.HIGHSCORES_TITLE);
     var verticalOffset = 150;
     for (var i = 0; i < scoresDescOrdered.size(); i++) {
       var highscore = scoresDescOrdered.get(i);
-      text.drawText(
+      textService.drawText(
           center,
           verticalOffset,
           highscore.color,
@@ -111,12 +114,12 @@ public class HighscoresView {
           String.format("#%d %-" + NAME_LENGTH + "s %03d", i + 1, highscore.name, highscore.score));
       verticalOffset += 50;
     }
-    text.drawText(
+    textService.drawText(
         center,
         conf.WINDOW_HEIGHT - 50 - GLYPH_HEIGHT,
         Color.WHITE,
         TextAlignment.CENTER,
-        FOOTER_TEXT);
+        texts.HIGHSCORES_FOOTER);
   }
 
   public void init() {
