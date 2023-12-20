@@ -19,12 +19,6 @@ public class SdlModule extends AbstractModule {
 
   @Provides
   @Singleton
-  static SDL_Event providesSdlEvent() {
-    return new SDL_Event();
-  }
-
-  @Provides
-  @Singleton
   static SDL_imageLibrary providesSdlImageLibrary() {
     return SDL_imageLibrary.INSTANCE;
   }

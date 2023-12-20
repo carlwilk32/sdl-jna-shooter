@@ -7,6 +7,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class Highscore {
   public final int score;
-  public final long timeStamp;
+  public boolean highlight = true;
   public String name;
 }
