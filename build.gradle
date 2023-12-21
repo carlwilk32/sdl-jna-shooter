@@ -53,6 +53,6 @@ jar {
 application {
     mainClass = 'org.example.Main'
     if (DefaultNativePlatform.currentOperatingSystem.isMacOsX()) {
-        applicationDefaultJvmArgs = ["-XstartOnFirstThread"]
+        applicationDefaultJvmArgs = ['-XstartOnFirstThread', '-Djna.library.path=/usr/local/lib/']
     }
 }
