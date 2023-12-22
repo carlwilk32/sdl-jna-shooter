@@ -15,7 +15,7 @@ We will use [JNA](https://github.com/java-native-access/jna) calls to access it 
 - SDL2_ttf
 - SDL2_mixer
 
-There are different ways obtaining and installing above which will. 
+There are different ways obtaining and installing the above. 
 One can download it directly from [libsdl-org GitHub releases](https://github.com/libsdl-org/SDL/releases) for their specific system or use your system's package manager.
 
 <details>
@@ -28,16 +28,27 @@ using `homebrew`
  ```
 </details>
 
+<details>
+  <summary>Arch Linux</summary>
+
+using `yay`
+
+```shell
+    yay -S sdl2 sdl2_image sdl2_ttf sdl2_mixer
+```
+
+</details>
+
 You can also build them manually from sources, but this process will not be covered here. To do so please refer to SDL documentation [here](https://wiki.libsdl.org/SDL2/Installation).
 
 ## Build
 ```shell
-./gardlew clean build
+./gradlew clean build
 ```
 
 ## Run
 ```shell
-./gardlew run
+./gradlew run
 ```
 
 ## Known issues
