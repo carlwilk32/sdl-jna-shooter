@@ -50,7 +50,7 @@ public class HighscoresView {
 
   private void doNameInput() {
     if (input.inputChar != null && sb.length() < NAME_LENGTH) {
-      if (input.inputChar >= '!' && input.inputChar <= '~') {
+      if (input.inputChar >= ' ' && input.inputChar <= '~') {
         sb.append(input.inputChar);
       }
     }
