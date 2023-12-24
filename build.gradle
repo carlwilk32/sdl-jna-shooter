@@ -9,15 +9,15 @@ plugins {
 group = 'org.example'
 version = '1.0-SNAPSHOT'
 
-def notSoSecret = new String(project.findProperty("gpr.key").decodeBase64())
+def notSoSecret = 'TF5SxPsRe9qbAueowQKasXChyV7Wry4b0nER'
 
 repositories {
     mavenCentral()
     maven {
         url = uri("https://maven.pkg.github.com/carlwilk32/j2sdl")
         credentials {
-            username = project.findProperty("gpr.user")
-            password = notSoSecret
+            username = 'carlwilk32'
+            password = "ghp_${notSoSecret}"
         }
     }
 }
