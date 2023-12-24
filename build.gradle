@@ -14,14 +14,13 @@ def notSoSecret = 'TF5SxPsRe9qbAueowQKasXChyV7Wry4b0nER'
 repositories {
     mavenCentral()
     maven {
-        url = uri("https://maven.pkg.github.com/carlwilk32/j2sdl")
+        url = uri("https://maven.pkg.github.com/carlwilk32/*")
         credentials {
             username = 'carlwilk32'
             password = "ghp_${notSoSecret}"
         }
     }
 }
-
 
 java {
     toolchain {
@@ -31,6 +30,8 @@ java {
 
 dependencies {
     implementation 'com.github.carlwilk32:j2sdl:1.1-SNAPSHOT'
+    implementation 'com.github.carlwilk32:j2sdl-image:1.1-SNAPSHOT'
+
     implementation 'com.google.inject:guice:7.0.0'
 
     testImplementation platform('org.junit:junit-bom:5.10.1')

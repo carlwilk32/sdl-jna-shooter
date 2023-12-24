@@ -13,7 +13,7 @@ import com.github.carlwilk32.api.hints.SdlHintsConst;
 import com.github.carlwilk32.api.rect.SDL_Rect;
 import com.github.carlwilk32.api.render.SDL_Renderer;
 import com.github.carlwilk32.api.render.SDL_Texture;
-import com.github.carlwilk32.jna.SDL_imageLibrary;
+import com.github.carlwilk32.sdl.image.SDL_imageLibrary;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.sun.jna.ptr.IntByReference;
