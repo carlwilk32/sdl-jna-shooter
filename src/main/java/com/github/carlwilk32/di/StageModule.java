@@ -20,6 +20,7 @@ public class StageModule extends AbstractModule {
   private static final String BACKGROUND_MASK = "gfx/3.png";
   private static final String EXPLOSION_MASK = "gfx/explosion.png";
   private static final String MAIN_FONT = "fonts/inconsolata-ultra-bold-27-1235px-width-13px-glyph.png";
+  private static final String TITLE_LOGO = "gfx/cooltext449986772810156.png";
 
   @Provides
   @Singleton
@@ -82,5 +83,12 @@ public class StageModule extends AbstractModule {
   @Named("MainFont")
   static SDL_Texture provideMainFont(DrawService draw) {
     return draw.loadTexture(MAIN_FONT);
+  }
+
+  @Provides
+  @Singleton
+  @Named("Logo")
+  static SDL_Texture provideLogo(DrawService draw) {
+    return draw.loadTexture(TITLE_LOGO);
   }
 }
