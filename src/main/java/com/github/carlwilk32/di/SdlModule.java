@@ -10,6 +10,7 @@ import com.github.carlwilk32.api.render.SDL_RendererFlags;
 import com.github.carlwilk32.api.video.SDL_Window;
 import com.github.carlwilk32.api.video.SdlVideoConst;
 import com.github.carlwilk32.sdl.image.SDL_imageLibrary;
+import com.github.carlwilk32.sdl.mixer.SDL_mixerLibrary;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
@@ -20,6 +21,12 @@ public class SdlModule extends AbstractModule {
   @Singleton
   static SDL_imageLibrary providesSdlImageLibrary() {
     return SDL_imageLibrary.INSTANCE;
+  }
+
+  @Provides
+  @Singleton
+  static SDL_mixerLibrary providesSdlMixerLibrary() {
+    return SDL_mixerLibrary.INSTANCE;
   }
 
   @Provides

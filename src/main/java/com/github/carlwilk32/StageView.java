@@ -24,6 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 public class StageView {
 
   private final DrawService draw;
+  private final AudioService audio;
   private final InputService input;
   private final AppConfig conf;
   private final PhysicsService physics;
@@ -269,6 +270,9 @@ public class StageView {
         addDebris(fighter);
         if (fighter != player) {
           this.score++;
+          audio.playSound(AudioService.Source.ENEMY_DIE, -1);
+        } else {
+          audio.playSound(AudioService.Source.PLAYER_DIE, 1);
         }
         return true;
       }
@@ -320,11 +324,7 @@ public class StageView {
 
   private void drawHUD() {
     text.drawText(
-        10,
-        10,
-        Color.WHITE,
-        TextAlignment.LEFT,
-        String.format("SCORE: %03d", this.score));
+        10, 10, Color.WHITE, TextAlignment.LEFT, String.format("SCORE: %03d", this.score));
   }
 
   private void drawDebris() {
