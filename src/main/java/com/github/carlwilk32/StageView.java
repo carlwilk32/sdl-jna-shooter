@@ -23,6 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class StageView {
 
+  private final CommonView commonView;
   private final DrawService draw;
   private final AudioService audio;
   private final InputService input;
@@ -44,15 +45,6 @@ public class StageView {
   @Named("Player")
   private final SDL_Texture playerSprite;
 
-  @Named("Background")
-  private final SDL_Texture background1;
-
-  @Named("BackgroundSky")
-  private final SDL_Texture background2;
-
-  @Named("BackgroundMask")
-  private final SDL_Texture background3;
-
   @Named("Explosion")
   private final SDL_Texture explosionTexture;
 
@@ -62,15 +54,10 @@ public class StageView {
   private GameObject player;
   private int enemySpawnTimer;
   private int stageResetTimer;
-  private int backgroundX;
-  private int skyX;
-  private int maskX;
   private int score;
 
   public void logic() {
-    doBackground();
-    doSky();
-    doMask();
+    commonView.doBackground();
     doPlayer();
     doEnemies();
     doFighters();
@@ -159,20 +146,6 @@ public class StageView {
               .build();
       explosions.add(explosion);
     }
-  }
-
-  private void doSky() {
-    if (--skyX < -conf.WINDOW_WIDTH) skyX = 0;
-  }
-
-  private void doMask() {
-    maskX -= 2;
-    if (--maskX < -conf.WINDOW_WIDTH) maskX = 0;
-  }
-
-  private void doBackground() {
-    backgroundX -= 4;
-    if (backgroundX < -conf.WINDOW_WIDTH) backgroundX = 0;
   }
 
   private void doEnemies() {
@@ -312,9 +285,7 @@ public class StageView {
   }
 
   public void draw() {
-    drawBackground(backgroundX, background1);
-    drawBackground(maskX, background2);
-    drawBackground(skyX, background3);
+    commonView.drawBackground();
     drawFighters();
     drawDebris();
     drawExplosions();
@@ -346,17 +317,6 @@ public class StageView {
       draw.blit(explosionTexture, (int) explosion.x, (int) explosion.y);
     }
     draw.setBlendMode(SDL_BLENDMODE_NONE);
-  }
-
-  private void drawBackground(int xAnchor, SDL_Texture texture) {
-    var sdlRect = new SDL_Rect();
-    for (var x = xAnchor; x < conf.WINDOW_WIDTH; x += conf.WINDOW_WIDTH) {
-      sdlRect.x = x;
-      sdlRect.y = 0;
-      sdlRect.w = conf.WINDOW_WIDTH;
-      sdlRect.h = conf.WINDOW_HEIGHT;
-      draw.renderBackground(texture, sdlRect);
-    }
   }
 
   private void drawBullets() {

@@ -14,7 +14,7 @@ public class App {
 
   private final DrawService drawService;
   private final AudioService audioService;
-  private final StageView stage;
+  private final TitleView homeView;
   private final InputService input;
   private final AppConfig conf;
 
@@ -24,7 +24,7 @@ public class App {
   public void start() {
     drawService.initGraphics();
     audioService.initAudio();
-    stage.init();
+    homeView.init();
 
     // ~16.6667 ms per frame
     final double desiredFrameDuration = 1000.0 / conf.GAME_FPS;

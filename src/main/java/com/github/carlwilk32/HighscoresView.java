@@ -23,6 +23,8 @@ public class HighscoresView {
   private static final int NUM_HIGHSCORES = 9;
   private static final int NAME_LENGTH = 15;
 
+  private final CommonView commonView;
+  private final TitleView homeView;
   private final InputService input;
   private final StageView stage;
   private final App app;
@@ -34,14 +36,19 @@ public class HighscoresView {
   private final List<Highscore> scoresDescOrdered = new LinkedList<>();
   private Integer newHighscoreIdx;
   private int cursorBlink;
+  private int timeout;
 
   private StringBuilder sb = new StringBuilder();
 
   private void logic() {
+    commonView.doBackground();
     if (newHighscoreIdx != null) {
       doNameInput();
-    } else if (input.keyboard[SDL_SCANCODE_SPACE]) {
-      stage.init();
+    } else {
+      if (--timeout <= 0) homeView.init();
+      if (input.keyboard[SDL_SCANCODE_SPACE]) {
+        stage.init();
+      }
     }
     if (++cursorBlink >= conf.GAME_FPS) {
       cursorBlink = 0;
@@ -71,8 +78,11 @@ public class HighscoresView {
   }
 
   private void draw() {
+    commonView.drawBackground();
     if (newHighscoreIdx != null) drawNameInput();
-    else drawHighscores();
+    else {
+      drawHighscores();
+    }
   }
 
   private void drawNameInput() {
@@ -101,8 +111,7 @@ public class HighscoresView {
 
   private void drawHighscores() {
     var center = conf.WINDOW_WIDTH / 2;
-    textService.drawText(
-        center, 50, Color.WHITE, TextAlignment.CENTER, texts.HIGHSCORES_TITLE);
+    textService.drawText(center, 50, Color.WHITE, TextAlignment.CENTER, texts.HIGHSCORES_TITLE);
     var verticalOffset = 150;
     for (var i = 0; i < scoresDescOrdered.size(); i++) {
       var highscore = scoresDescOrdered.get(i);
@@ -125,6 +134,8 @@ public class HighscoresView {
   public void init() {
     app.logic = this::logic;
     app.draw = this::draw;
+
+    timeout = conf.GAME_FPS * 5;
   }
 
   public void addHighScore(int newScore) {
