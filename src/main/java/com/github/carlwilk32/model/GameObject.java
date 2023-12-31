@@ -1,8 +1,8 @@
 package com.github.carlwilk32.model;
 
-import static com.github.carlwilk32.api.render.SdlRender.SDL_QueryTexture;
+import static com.github.carlwilk32.sdl.core.api.render.SdlRender.SDL_QueryTexture;
 
-import com.github.carlwilk32.api.render.SDL_Texture;
+import com.github.carlwilk32.sdl.core.api.render.SDL_Texture;
 import com.sun.jna.ptr.IntByReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

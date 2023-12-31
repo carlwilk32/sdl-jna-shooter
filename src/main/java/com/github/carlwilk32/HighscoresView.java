@@ -2,12 +2,12 @@ package com.github.carlwilk32;
 
 import static com.github.carlwilk32.TextService.GLYPH_HEIGHT;
 import static com.github.carlwilk32.TextService.GLYPH_WIDTH;
-import static com.github.carlwilk32.api.render.SdlRender.SDL_RenderFillRect;
-import static com.github.carlwilk32.api.render.SdlRender.SDL_SetRenderDrawColor;
-import static com.github.carlwilk32.api.scancode.SDL_Scancode.*;
+import static com.github.carlwilk32.sdl.core.api.render.SdlRender.SDL_RenderFillRect;
+import static com.github.carlwilk32.sdl.core.api.render.SdlRender.SDL_SetRenderDrawColor;
+import static com.github.carlwilk32.sdl.core.api.scancode.SDL_Scancode.*;
 
-import com.github.carlwilk32.api.rect.SDL_Rect;
-import com.github.carlwilk32.api.render.SDL_Renderer;
+import com.github.carlwilk32.sdl.core.api.rect.SDL_Rect;
+import com.github.carlwilk32.sdl.core.api.render.SDL_Renderer;
 import com.github.carlwilk32.model.Color;
 import com.github.carlwilk32.model.Highscore;
 import com.github.carlwilk32.model.TextAlignment;

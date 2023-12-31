@@ -1,7 +1,7 @@
 package com.github.carlwilk32;
 
-import com.github.carlwilk32.api.rect.SDL_Rect;
-import com.github.carlwilk32.api.render.SDL_Texture;
+import com.github.carlwilk32.sdl.core.api.rect.SDL_Rect;
+import com.github.carlwilk32.sdl.core.api.render.SDL_Texture;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;

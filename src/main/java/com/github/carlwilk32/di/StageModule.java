@@ -1,7 +1,7 @@
 package com.github.carlwilk32.di;
 
 import com.github.carlwilk32.DrawService;
-import com.github.carlwilk32.api.render.SDL_Texture;
+import com.github.carlwilk32.sdl.core.api.render.SDL_Texture;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;

@@ -1,14 +1,14 @@
 package com.github.carlwilk32.di;
 
-import static com.github.carlwilk32.api.error.SdlError.SDL_GetError;
-import static com.github.carlwilk32.api.render.SdlRender.SDL_CreateRenderer;
-import static com.github.carlwilk32.api.video.SdlVideo.SDL_CreateWindow;
+import static com.github.carlwilk32.sdl.core.api.error.SdlError.SDL_GetError;
+import static com.github.carlwilk32.sdl.core.api.render.SdlRender.SDL_CreateRenderer;
+import static com.github.carlwilk32.sdl.core.api.video.SdlVideo.SDL_CreateWindow;
 
 import com.github.carlwilk32.AppConfig;
-import com.github.carlwilk32.api.render.SDL_Renderer;
-import com.github.carlwilk32.api.render.SDL_RendererFlags;
-import com.github.carlwilk32.api.video.SDL_Window;
-import com.github.carlwilk32.api.video.SdlVideoConst;
+import com.github.carlwilk32.sdl.core.api.render.SDL_Renderer;
+import com.github.carlwilk32.sdl.core.api.render.SDL_RendererFlags;
+import com.github.carlwilk32.sdl.core.api.video.SDL_Window;
+import com.github.carlwilk32.sdl.core.api.video.SdlVideoConst;
 import com.github.carlwilk32.sdl.image.SDL_imageLibrary;
 import com.github.carlwilk32.sdl.mixer.SDL_mixerLibrary;
 import com.google.inject.AbstractModule;

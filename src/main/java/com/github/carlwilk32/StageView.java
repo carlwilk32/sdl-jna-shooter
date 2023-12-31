@@ -1,13 +1,13 @@
 package com.github.carlwilk32;
 
-import static com.github.carlwilk32.api.blendmode.SDL_BlendMode.SDL_BLENDMODE_ADD;
-import static com.github.carlwilk32.api.blendmode.SDL_BlendMode.SDL_BLENDMODE_NONE;
-import static com.github.carlwilk32.api.render.SdlRender.*;
-import static com.github.carlwilk32.api.scancode.SDL_Scancode.*;
+import static com.github.carlwilk32.sdl.core.api.blendmode.SDL_BlendMode.SDL_BLENDMODE_ADD;
+import static com.github.carlwilk32.sdl.core.api.blendmode.SDL_BlendMode.SDL_BLENDMODE_NONE;
+import static com.github.carlwilk32.sdl.core.api.render.SdlRender.*;
+import static com.github.carlwilk32.sdl.core.api.scancode.SDL_Scancode.*;
 import static com.github.carlwilk32.model.Owner.PLAYER;
 
-import com.github.carlwilk32.api.rect.SDL_Rect;
-import com.github.carlwilk32.api.render.SDL_Texture;
+import com.github.carlwilk32.sdl.core.api.rect.SDL_Rect;
+import com.github.carlwilk32.sdl.core.api.render.SDL_Texture;
 import com.github.carlwilk32.model.*;
 import com.google.inject.Inject;
 import com.google.inject.Provider;

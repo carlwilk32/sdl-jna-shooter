@@ -1,18 +1,18 @@
 package com.github.carlwilk32;
 
-import static com.github.carlwilk32.api.Sdl.SDL_Init;
-import static com.github.carlwilk32.api.error.SdlError.SDL_GetError;
-import static com.github.carlwilk32.api.hints.SdlHints.SDL_SetHint;
-import static com.github.carlwilk32.api.mouse.SdlMouse.SDL_ShowCursor;
-import static com.github.carlwilk32.api.render.SdlRender.*;
+import static com.github.carlwilk32.sdl.core.api.Sdl.SDL_Init;
+import static com.github.carlwilk32.sdl.core.api.error.SdlError.SDL_GetError;
+import static com.github.carlwilk32.sdl.core.api.hints.SdlHints.SDL_SetHint;
+import static com.github.carlwilk32.sdl.core.api.mouse.SdlMouse.SDL_ShowCursor;
+import static com.github.carlwilk32.sdl.core.api.render.SdlRender.*;
 
-import com.github.carlwilk32.api.SdlSubSystemConst;
-import com.github.carlwilk32.api.blendmode.SDL_BlendMode;
-import com.github.carlwilk32.api.event.SdlEventsConst;
-import com.github.carlwilk32.api.hints.SdlHintsConst;
-import com.github.carlwilk32.api.rect.SDL_Rect;
-import com.github.carlwilk32.api.render.SDL_Renderer;
-import com.github.carlwilk32.api.render.SDL_Texture;
+import com.github.carlwilk32.sdl.core.api.SdlSubSystemConst;
+import com.github.carlwilk32.sdl.core.api.blendmode.SDL_BlendMode;
+import com.github.carlwilk32.sdl.core.api.event.SdlEventsConst;
+import com.github.carlwilk32.sdl.core.api.hints.SdlHintsConst;
+import com.github.carlwilk32.sdl.core.api.rect.SDL_Rect;
+import com.github.carlwilk32.sdl.core.api.render.SDL_Renderer;
+import com.github.carlwilk32.sdl.core.api.render.SDL_Texture;
 import com.github.carlwilk32.sdl.image.SDL_imageLibrary;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;

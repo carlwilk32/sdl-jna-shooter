@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.github.carlwilk32.api.error.SdlError.SDL_GetError;
+import static com.github.carlwilk32.sdl.core.api.error.SdlError.SDL_GetError;
 
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = {@Inject})

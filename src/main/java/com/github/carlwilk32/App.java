@@ -1,6 +1,6 @@
 package com.github.carlwilk32;
 
-import static com.github.carlwilk32.api.timer.SdlTimer.*;
+import static com.github.carlwilk32.sdl.core.api.timer.SdlTimer.*;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;

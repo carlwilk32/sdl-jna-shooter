@@ -1,7 +1,7 @@
 package com.github.carlwilk32.model;
 
-import com.github.carlwilk32.api.rect.SDL_Rect;
-import com.github.carlwilk32.api.render.SDL_Texture;
+import com.github.carlwilk32.sdl.core.api.rect.SDL_Rect;
+import com.github.carlwilk32.sdl.core.api.render.SDL_Texture;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;

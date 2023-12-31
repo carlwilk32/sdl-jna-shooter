@@ -1,9 +1,9 @@
 package com.github.carlwilk32;
 
-import static com.github.carlwilk32.api.render.SdlRender.SDL_SetTextureColorMod;
+import static com.github.carlwilk32.sdl.core.api.render.SdlRender.SDL_SetTextureColorMod;
 
-import com.github.carlwilk32.api.rect.SDL_Rect;
-import com.github.carlwilk32.api.render.SDL_Texture;
+import com.github.carlwilk32.sdl.core.api.rect.SDL_Rect;
+import com.github.carlwilk32.sdl.core.api.render.SDL_Texture;
 import com.github.carlwilk32.model.Color;
 import com.github.carlwilk32.model.TextAlignment;
 import com.google.inject.Inject;

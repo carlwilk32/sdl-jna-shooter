@@ -1,10 +1,10 @@
 package com.github.carlwilk32;
 
-import static com.github.carlwilk32.api.event.SdlEvents.SDL_PollEvent;
+import static com.github.carlwilk32.sdl.core.api.event.SdlEvents.SDL_PollEvent;
 
-import com.github.carlwilk32.api.event.SDL_Event;
-import com.github.carlwilk32.api.event.SDL_EventType;
-import com.github.carlwilk32.api.event.events.SDL_KeyboardEvent;
+import com.github.carlwilk32.sdl.core.api.event.SDL_Event;
+import com.github.carlwilk32.sdl.core.api.event.SDL_EventType;
+import com.github.carlwilk32.sdl.core.api.event.events.SDL_KeyboardEvent;
 import com.google.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 

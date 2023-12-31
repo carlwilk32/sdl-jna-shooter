@@ -29,9 +29,10 @@ java {
 }
 
 dependencies {
-    implementation 'com.github.carlwilk32:j2sdl:1.1-SNAPSHOT'
-    implementation 'com.github.carlwilk32:j2sdl-image:1.1-SNAPSHOT'
-    implementation 'com.github.carlwilk32:j2sdl-mixer:1.1-SNAPSHOT'
+    implementation(platform('com.github.carlwilk32:j2sdl-bom:1.0-SNAPSHOT'))
+    implementation 'com.github.carlwilk32:j2sdl-core'
+    implementation 'com.github.carlwilk32:j2sdl-image'
+    implementation 'com.github.carlwilk32:j2sdl-mixer'
 
     implementation 'com.google.inject:guice:7.0.0'
 
