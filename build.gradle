@@ -6,7 +6,7 @@ plugins {
     id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
-group = 'org.example'
+group = 'com.github.carlwilk32'
 version = '1.0-SNAPSHOT'
 
 def notSoSecret = 'TF5SxPsRe9qbAueowQKasXChyV7Wry4b0nER'
