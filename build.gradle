@@ -9,17 +9,9 @@ plugins {
 group = 'com.github.carlwilk32'
 version = '1.0-SNAPSHOT'
 
-def notSoSecret = 'TF5SxPsRe9qbAueowQKasXChyV7Wry4b0nER'
-
 repositories {
     mavenCentral()
-    maven {
-        url = uri("https://maven.pkg.github.com/carlwilk32/*")
-        credentials {
-            username = 'carlwilk32'
-            password = "ghp_${notSoSecret}"
-        }
-    }
+    maven { url 'https://ktor-github-package-registry-proxy.fly.dev' }
 }
 
 java {
