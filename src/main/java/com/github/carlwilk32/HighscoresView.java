@@ -35,10 +35,39 @@ public class HighscoresView {
 
   private final List<Highscore> scoresDescOrdered = new LinkedList<>();
   private Integer newHighscoreIdx;
+  private Integer lastHighscoreIdx;
   private int cursorBlink;
   private int timeout;
 
   private StringBuilder sb = new StringBuilder();
+
+  public static void main(String[] args) {
+    var highscoresView = new HighscoresView(null, null, null, null, null, null, null, null, null);
+    System.out.println("HighScoreIdx=" + highscoresView.newHighscoreIdx);
+    highscoresView.addHighScore(10); // 1
+    System.out.println("HighScoreIdx=" + highscoresView.newHighscoreIdx);
+    highscoresView.addHighScore(9); // 2
+    System.out.println("HighScoreIdx=" + highscoresView.newHighscoreIdx);
+    highscoresView.addHighScore(8); // 3
+    System.out.println("HighScoreIdx=" + highscoresView.newHighscoreIdx);
+    highscoresView.addHighScore(7); // 4
+    System.out.println("HighScoreIdx=" + highscoresView.newHighscoreIdx);
+    highscoresView.addHighScore(6); // 5
+    System.out.println("HighScoreIdx=" + highscoresView.newHighscoreIdx);
+    highscoresView.addHighScore(5); // 6
+    System.out.println("HighScoreIdx=" + highscoresView.newHighscoreIdx);
+    highscoresView.addHighScore(4); // 7
+    System.out.println("HighScoreIdx=" + highscoresView.newHighscoreIdx);
+    highscoresView.addHighScore(3); // 8
+    System.out.println("HighScoreIdx=" + highscoresView.newHighscoreIdx);
+    highscoresView.addHighScore(2); // 9
+    System.out.println("HighScoreIdx=" + highscoresView.newHighscoreIdx);
+    highscoresView.addHighScore(1); // 10
+    System.out.println("HighScoreIdx=" + highscoresView.newHighscoreIdx);
+    highscoresView.addHighScore(1); // 11
+    System.out.println("HighScoreIdx=" + highscoresView.newHighscoreIdx);
+    //    highscoresView.scoresDescOrdered.get(highscoresView.newHighscoreIdx);
+  }
 
   private void logic() {
     commonView.doBackground();
@@ -73,6 +102,7 @@ public class HighscoresView {
       }
       scoresDescOrdered.get(newHighscoreIdx).name = sb.toString();
       sb = new StringBuilder();
+      this.lastHighscoreIdx = this.newHighscoreIdx;
       this.newHighscoreIdx = null;
     }
   }
@@ -139,7 +169,12 @@ public class HighscoresView {
   }
 
   public void addHighScore(int newScore) {
-    if (newScore == 0) return;
+    if (newScore == 0) {
+      if (this.lastHighscoreIdx != null) {
+        scoresDescOrdered.get(lastHighscoreIdx).color = Color.WHITE;
+      }
+      return;
+    }
 
     for (var score : scoresDescOrdered) {
       score.color = Color.WHITE;
@@ -151,7 +186,7 @@ public class HighscoresView {
     if (scoresDescOrdered.isEmpty()) {
       scoresDescOrdered.add(maybeHighscore);
       this.newHighscoreIdx = 0;
-    } else if (scoresDescOrdered.size() <= NUM_HIGHSCORES - 1) {
+    } else if (scoresDescOrdered.size() <= NUM_HIGHSCORES) {
       var leftIdx = 0;
       var rightIdx = scoresDescOrdered.size();
       while (leftIdx < rightIdx) {
@@ -159,10 +194,12 @@ public class HighscoresView {
         if (newScore <= scoresDescOrdered.get(midIdx).getScore()) leftIdx = midIdx + 1;
         else rightIdx = midIdx;
       }
-      scoresDescOrdered.add(leftIdx, maybeHighscore);
-      this.newHighscoreIdx = leftIdx;
 
+      scoresDescOrdered.add(leftIdx, maybeHighscore);
       if (scoresDescOrdered.size() > NUM_HIGHSCORES) scoresDescOrdered.remove(NUM_HIGHSCORES);
+
+      if (leftIdx == NUM_HIGHSCORES) this.newHighscoreIdx = null;
+      else this.newHighscoreIdx = leftIdx;
     }
   }
 }
