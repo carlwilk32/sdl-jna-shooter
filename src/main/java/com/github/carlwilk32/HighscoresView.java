@@ -151,7 +151,7 @@ public class HighscoresView {
     if (scoresDescOrdered.isEmpty()) {
       scoresDescOrdered.add(maybeHighscore);
       this.newHighscoreIdx = 0;
-    } else if (scoresDescOrdered.size() <= NUM_HIGHSCORES) {
+    } else if (scoresDescOrdered.size() <= NUM_HIGHSCORES - 1) {
       var leftIdx = 0;
       var rightIdx = scoresDescOrdered.size();
       while (leftIdx < rightIdx) {
