@@ -1,10 +1,12 @@
 package com.github.carlwilk32;
 
 import static com.github.carlwilk32.sdl.core.api.Sdl.SDL_Init;
+import static com.github.carlwilk32.sdl.core.api.Sdl.SDL_Quit;
 import static com.github.carlwilk32.sdl.core.api.error.SdlError.SDL_GetError;
 import static com.github.carlwilk32.sdl.core.api.hints.SdlHints.SDL_SetHint;
 import static com.github.carlwilk32.sdl.core.api.mouse.SdlMouse.SDL_ShowCursor;
 import static com.github.carlwilk32.sdl.core.api.render.SdlRender.*;
+import static com.github.carlwilk32.sdl.core.api.video.SdlVideo.SDL_DestroyWindow;
 
 import com.github.carlwilk32.sdl.core.api.SdlSubSystemConst;
 import com.github.carlwilk32.sdl.core.api.blendmode.SDL_BlendMode;
@@ -13,6 +15,7 @@ import com.github.carlwilk32.sdl.core.api.hints.SdlHintsConst;
 import com.github.carlwilk32.sdl.core.api.rect.SDL_Rect;
 import com.github.carlwilk32.sdl.core.api.render.SDL_Renderer;
 import com.github.carlwilk32.sdl.core.api.render.SDL_Texture;
+import com.github.carlwilk32.sdl.core.api.video.SDL_Window;
 import com.github.carlwilk32.sdl.image.SDL_imageLibrary;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -28,6 +31,7 @@ import org.intellij.lang.annotations.MagicConstant;
 public class DrawService {
 
   private final SDL_Renderer renderer;
+  private final SDL_Window window;
   private final SDL_imageLibrary sdlImage;
 
   public void initGraphics() {
@@ -111,10 +115,10 @@ public class DrawService {
   }
 
   public void cleanup() {
-    //    SdlImage.IMG_Quit();
-    //    SDL_DestroyRenderer(renderer);
-    //    SDL_DestroyWindow(window);
-    //    SDL_Quit();
+        sdlImage.IMG_Quit();
+        SDL_DestroyRenderer(renderer);
+        SDL_DestroyWindow(window);
+        SDL_Quit();
   }
 
   public void renderBackground(SDL_Texture background, SDL_Rect sdlRect) {

@@ -15,17 +15,19 @@ public class InputService {
   public final boolean[] keyboard = new boolean[350];
   public Character inputChar;
 
-  public void doInput() {
+  public boolean doInput() {
     var event = new SDL_Event();
     inputChar = null;
-    while (SDL_PollEvent(event) != 0) {
+    var shouldRun = true;
+    while (SDL_PollEvent(event) != 0 && shouldRun) {
       switch (event.type) {
-        case SDL_EventType.SDL_QUIT -> System.exit(0);
+        case SDL_EventType.SDL_QUIT -> shouldRun = false;
         case SDL_EventType.SDL_KEYDOWN -> doKeyDown(event.key);
         case SDL_EventType.SDL_KEYUP -> doKeyUp(event.key);
         case SDL_EventType.SDL_TEXTINPUT -> inputChar = (char) event.text.text[0];
       }
     }
+    return shouldRun;
   }
 
   private void doKeyUp(SDL_KeyboardEvent key) {

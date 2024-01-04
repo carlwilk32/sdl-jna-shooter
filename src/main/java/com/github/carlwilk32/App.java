@@ -24,16 +24,19 @@ public class App {
   public void start() {
     drawService.initGraphics();
     audioService.initAudio();
+    audioService.playMusic(true);
     homeView.init();
 
     // ~16.6667 ms per frame
     final double desiredFrameDuration = 1000.0 / conf.GAME_FPS;
 
-    while (true) {
+    var shouldRun = true;
+
+    while (shouldRun) {
       var start = SDL_GetPerformanceCounter();
 
       drawService.prepareScene();
-      input.doInput();
+      shouldRun = input.doInput();
       this.logic.run();
       this.draw.run();
       drawService.presentScene();
@@ -46,5 +49,12 @@ public class App {
       //      log.info("FPS: {}", 1 / (desiredFrameDuration - elapsedMs) * 1000);
       SDL_Delay((int) Math.floor(desiredFrameDuration - elapsedMs));
     }
+
+    destroy();
+  }
+
+  private void destroy() {
+    audioService.cleanUp();
+    drawService.cleanup();
   }
 }
