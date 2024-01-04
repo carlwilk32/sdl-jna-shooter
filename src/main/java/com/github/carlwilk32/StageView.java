@@ -151,6 +151,7 @@ public class StageView {
   private void doEnemies() {
     for (var enemy : fighters) {
       if (enemy != player && player != null && --enemy.reload <= 0) {
+        audio.playSound(AudioService.Event.ENEMY_FIRE, AudioService.Channel.ENEMY_FIRE);
         fireEnemyBullet(enemy);
       }
     }
@@ -243,9 +244,9 @@ public class StageView {
         addDebris(fighter);
         if (fighter != player) {
           this.score++;
-          audio.playSound(AudioService.Source.ENEMY_DIE, -1);
+          audio.playSound(AudioService.Event.ENEMY_DIE, AudioService.Channel.ANY);
         } else {
-          audio.playSound(AudioService.Source.PLAYER_DIE, 1);
+          audio.playSound(AudioService.Event.PLAYER_DIE, AudioService.Channel.PLAYER);
         }
         return true;
       }
@@ -265,7 +266,10 @@ public class StageView {
       if (input.keyboard[SDL_SCANCODE_LEFT]) player.dx = -conf.PLAYER_SPEED;
       if (input.keyboard[SDL_SCANCODE_RIGHT]) player.dx = conf.PLAYER_SPEED;
 
-      if (input.keyboard[SDL_SCANCODE_SPACE] && player.reload == 0) fireBullet();
+      if (input.keyboard[SDL_SCANCODE_SPACE] && player.reload == 0) {
+        audio.playSound(AudioService.Event.PLAYER_FIRE, AudioService.Channel.PLAYER);
+        fireBullet();
+      }
     }
   }
 

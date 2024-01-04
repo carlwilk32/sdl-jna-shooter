@@ -1,26 +1,28 @@
 package com.github.carlwilk32;
 
+import static com.github.carlwilk32.sdl.core.api.error.SdlError.SDL_GetError;
+
 import com.github.carlwilk32.sdl.mixer.Mix_Chunk;
 import com.github.carlwilk32.sdl.mixer.SDL_mixerLibrary;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.sun.jna.ptr.PointerByReference;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-
 import java.util.HashMap;
 import java.util.Map;
-
-import static com.github.carlwilk32.sdl.core.api.error.SdlError.SDL_GetError;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = {@Inject})
 @Slf4j
 public class AudioService {
 
+  private static final int PLAY_INFINITE = -1;
+  private static final int PLAY_ONCE = 0;
   private static final int MAX_SND_CHANNELS = 8;
   private final SDL_mixerLibrary sdlMixerLibrary;
-  private Map<Source, Mix_Chunk> sounds;
+  private Map<Event, Mix_Chunk> sounds;
   private PointerByReference music;
 
   public void initAudio() {
@@ -36,14 +38,16 @@ public class AudioService {
     music = initMusic("audio/music/607942__bloodpixelhero__retro-arcade-music-3.ogg");
   }
 
-  public void playSound(Source source, int channel) {
-    sdlMixerLibrary.Mix_PlayChannel(channel, sounds.get(source), 0);
+  public void playSound(Event source, Channel channel) {
+    sdlMixerLibrary.Mix_PlayChannel(channel.getNum(), sounds.get(source), PLAY_ONCE);
   }
 
-  private Map<Source, Mix_Chunk> initSounds() {
-    var sounds = new HashMap<Source, Mix_Chunk>();
-    sounds.put(Source.ENEMY_DIE, loadSound("audio/enemy_plane_explosion_.mp3"));
-    sounds.put(Source.PLAYER_DIE, loadSound("audio/player_plane_explosion_smooth.mp3"));
+  private Map<Event, Mix_Chunk> initSounds() {
+    var sounds = new HashMap<Event, Mix_Chunk>();
+    sounds.put(Event.ENEMY_DIE, loadSound("audio/enemy_plane_explosion_.mp3"));
+    sounds.put(Event.PLAYER_DIE, loadSound("audio/player_plane_explosion_smooth.mp3"));
+    sounds.put(Event.PLAYER_FIRE, loadSound("audio/221434__jalastram__shoot008.mp3"));
+    sounds.put(Event.ENEMY_FIRE, loadSound("audio/221435__jalastram__shoot007.mp3"));
     return sounds;
   }
 
@@ -59,7 +63,7 @@ public class AudioService {
 
   public void playMusic(boolean loop) {
     // -1 for infinite play
-    sdlMixerLibrary.Mix_PlayMusic(music, loop ? -1 : 0);
+    sdlMixerLibrary.Mix_PlayMusic(music, loop ? PLAY_INFINITE : PLAY_ONCE);
   }
 
   // TODO generify
@@ -78,8 +82,21 @@ public class AudioService {
     sdlMixerLibrary.Mix_Quit();
   }
 
-  public enum Source {
+  public enum Event {
     PLAYER_DIE,
     ENEMY_DIE,
+    PLAYER_FIRE, ENEMY_FIRE,
+  }
+
+  public enum Channel {
+    ANY(-1),
+    PLAYER(0),
+    ENEMY_FIRE(1);
+
+    @Getter private final int num;
+
+    Channel(int num) {
+      this.num = num;
+    }
   }
 }
