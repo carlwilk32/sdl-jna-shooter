@@ -4,10 +4,10 @@ import com.github.carlwilk32.sdl.mixer.Mix_Chunk;
 import com.github.carlwilk32.sdl.mixer.SDL_mixerLibrary;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.sun.jna.ptr.PointerByReference;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,6 +21,7 @@ public class AudioService {
   private static final int MAX_SND_CHANNELS = 8;
   private final SDL_mixerLibrary sdlMixerLibrary;
   private Map<Source, Mix_Chunk> sounds;
+  private PointerByReference music;
 
   public void initAudio() {
     var openAudio =
@@ -32,6 +33,7 @@ public class AudioService {
 
     sdlMixerLibrary.Mix_AllocateChannels(MAX_SND_CHANNELS);
     sounds = initSounds();
+    music = initMusic("audio/music/607942__bloodpixelhero__retro-arcade-music-3.ogg");
   }
 
   public void playSound(Source source, int channel) {
@@ -45,28 +47,34 @@ public class AudioService {
     return sounds;
   }
 
-  // TODO generify
-  public Mix_Chunk loadSound(String fileName) {
-    log.info("Loading {}", fileName);
-    try {
-      var resourceAsStream =
-          Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName);
-      var soundFIle = Utils.stream2file(resourceAsStream, "image", ".png");
-      var fullPath = soundFIle.toURI().getPath();
-      var sound = sdlMixerLibrary.Mix_LoadWAV(fullPath);
-      if (sound == null) {
-        log.error("Failed to load sound {}.", fileName);
-        throw new RuntimeException();
-      }
-      return sound;
-    } catch (IOException e) {
-      log.error("Unable to save sound stream to memory.", e);
-      throw new RuntimeException(e);
+  private PointerByReference initMusic(String filename) {
+    log.info("Loading {}", filename);
+    if (this.music != null) {
+      sdlMixerLibrary.Mix_HaltMusic();
+      sdlMixerLibrary.Mix_FreeMusic(music);
+      music = null;
     }
+    return sdlMixerLibrary.Mix_LoadMUS(Utils.getFullPath(filename));
   }
 
-  // TODO
-  private void cleanUp() {
+  public void playMusic(boolean loop) {
+    // -1 for infinite play
+    sdlMixerLibrary.Mix_PlayMusic(music, loop ? -1 : 0);
+  }
+
+  // TODO generify
+  private Mix_Chunk loadSound(String fileName) {
+    log.info("Loading {}", fileName);
+    var fullPath = Utils.getFullPath(fileName);
+    var sound = sdlMixerLibrary.Mix_LoadWAV(fullPath);
+    if (sound == null) {
+      log.error("Failed to load sound {}.", fileName);
+      throw new RuntimeException();
+    }
+    return sound;
+  }
+
+  public void cleanUp() {
     sdlMixerLibrary.Mix_Quit();
   }
 
@@ -74,5 +82,4 @@ public class AudioService {
     PLAYER_DIE,
     ENEMY_DIE,
   }
-
 }
