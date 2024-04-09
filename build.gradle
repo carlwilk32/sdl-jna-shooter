@@ -40,7 +40,7 @@ dependencies {
     implementation 'ch.qos.logback:logback-classic:1.5.3'
     implementation 'org.slf4j:slf4j-api:2.0.12'
 
-    implementation 'commons-io:commons-io:2.15.1'
+    implementation 'commons-io:commons-io:2.16.1'
 }
 
 test {
